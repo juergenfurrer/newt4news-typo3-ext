@@ -1,0 +1,25 @@
+{
+    "name": "infonique/newt4news",
+    "type": "typo3-cms-extension",
+    "description": "Extension with the Newt-Provider for News",
+    "authors": [
+        {
+            "name": "Juergen Furrer",
+            "role": "Developer"
+        }
+    ],
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "typo3/cms-core": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Infonique\\Newt4news\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "newt4news"
+        }
+    }
+}
