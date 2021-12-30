@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Infonique\\Newt4news\\": "Classes"
+            "Infonique\\Newt4News\\": "Classes"
         }
     },
     "extra": {
