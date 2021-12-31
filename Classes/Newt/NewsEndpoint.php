@@ -43,8 +43,16 @@ class NewsEndpoint implements EndpointInterface
         $news->setTitle($params["title"]);
         $news->setTeaser($params["teaser"]);
         $news->setBodytext($params["bodytext"]);
+
         if ($model->getPageUid() > 0) {
             $news->setPid($model->getPageUid());
+        }
+        if ($params["image"] && $params["image"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
+            /** @var \Infonique\Newt\Domain\Model\FileReference */
+            $imageRef = $params["image"];
+            $fileReference = new \GeorgRinger\News\Domain\Model\FileReference();
+            $fileReference->setFileUid($imageRef->getUidLocal());
+            $news->addFalMedia($fileReference);
         }
 
         // Set News-Type
@@ -138,12 +146,18 @@ class NewsEndpoint implements EndpointInterface
         $datetime->setLabel("Date & Time");
         $datetime->setType(FieldType::DATETIME);
 
+        $image = new Field();
+        $image->setName("image");
+        $image->setLabel("Image");
+        $image->setType(FieldType::IMAGE);
+
         return [
             $istopnews,
             $title,
             $teaser,
             $bodytext,
             $datetime,
+            $image,
         ];
     }
 }
