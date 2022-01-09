@@ -12,8 +12,10 @@ use Infonique\Newt\NewtApi\EndpointInterface;
 use Infonique\Newt\NewtApi\Field;
 use Infonique\Newt\NewtApi\FieldType;
 use Infonique\Newt\NewtApi\FieldValidation;
+use Infonique\Newt\NewtApi\Item;
 use Infonique\Newt\NewtApi\MethodCreateModel;
 use Infonique\Newt\NewtApi\MethodDeleteModel;
+use Infonique\Newt\NewtApi\MethodListModel;
 use Infonique\Newt\NewtApi\MethodReadModel;
 use Infonique\Newt\NewtApi\MethodType;
 use Infonique\Newt\NewtApi\MethodUpdateModel;
@@ -28,9 +30,9 @@ class NewsEndpoint implements EndpointInterface
      * Implement of create
      *
      * @param array $params
-     * @return boolean
+     * @return string
      */
-    public function methodCreate(MethodCreateModel $model): bool
+    public function methodCreate(MethodCreateModel $model): string
     {
         if (! $model || count($model->getParams()) == 0) {
             return false;
@@ -76,15 +78,16 @@ class NewsEndpoint implements EndpointInterface
         $newsRepository = $objectManager->get(NewsRepository::class);
         $newsRepository->add($news);
 
-        // Safe the item for slug-update
+        // persist the item
         $objectManager->get(PersistenceManager::class)->persistAll();
+
         // Update the Slug
         SlugUtility::populateEmptySlugsInCustomTable('tx_news_domain_model_news', 'path_segment');
 
-        return true;
+        return strval($news->getUid());
     }
 
-    public function methodRead(MethodReadModel $model): array
+    public function methodRead(MethodReadModel $model): Item
     {
         throw new \Exception("Not implemented");
     }
@@ -95,6 +98,11 @@ class NewsEndpoint implements EndpointInterface
     }
 
     public function methodDelete(MethodDeleteModel $model): bool
+    {
+        throw new \Exception("Not implemented");
+    }
+
+    public function methodList(MethodListModel $model): array
     {
         throw new \Exception("Not implemented");
     }
