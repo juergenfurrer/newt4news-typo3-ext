@@ -13,6 +13,7 @@ use Infonique\Newt\NewtApi\Field;
 use Infonique\Newt\NewtApi\FieldType;
 use Infonique\Newt\NewtApi\FieldValidation;
 use Infonique\Newt\NewtApi\Item;
+use Infonique\Newt\NewtApi\ItemValue;
 use Infonique\Newt\NewtApi\MethodCreateModel;
 use Infonique\Newt\NewtApi\MethodDeleteModel;
 use Infonique\Newt\NewtApi\MethodListModel;
@@ -30,12 +31,13 @@ class NewsEndpoint implements EndpointInterface
      * Implement of create
      *
      * @param array $params
-     * @return string
+     * @return Item
      */
-    public function methodCreate(MethodCreateModel $model): string
+    public function methodCreate(MethodCreateModel $model): Item
     {
+        $item = new Item();
         if (! $model || count($model->getParams()) == 0) {
-            return false;
+            return $item;
         }
 
         $params = $model->getParams();
@@ -84,7 +86,13 @@ class NewsEndpoint implements EndpointInterface
         // Update the Slug
         SlugUtility::populateEmptySlugsInCustomTable('tx_news_domain_model_news', 'path_segment');
 
-        return strval($news->getUid());
+        $item->setTitle($news->getTitle());
+        $item->setDescription($news->getTeaser());
+        foreach ($params as $key => $val) {
+            $item->addValue(new ItemValue($key, $val));
+        }
+
+        return $item;
     }
 
     public function methodRead(MethodReadModel $model): Item
