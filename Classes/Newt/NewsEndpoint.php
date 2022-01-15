@@ -92,7 +92,7 @@ class NewsEndpoint implements EndpointInterface
         throw new \Exception("Not implemented");
     }
 
-    public function methodUpdate(MethodUpdateModel $model): bool
+    public function methodUpdate(MethodUpdateModel $model): Item
     {
         throw new \Exception("Not implemented");
     }
