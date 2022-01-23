@@ -73,7 +73,9 @@ class NewsEndpoint implements EndpointInterface
             }
             $news->setDatetime($params["datetime"]);
         }
-        $news->setCruserId($model->getBackendUserUid());
+        if ($model->getBackendUserUid() > 0) {
+            $news->setCruserId($model->getBackendUserUid());
+        }
         /** @var ObjectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var NewsRepository */
