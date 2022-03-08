@@ -6,13 +6,13 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'be',
     'author' => 'Juergen Furrer',
     'author_email' => 'juergen@infonique.ch',
-    'state' => 'alpha',
+    'state' => 'beta',
     'clearCacheOnLoad' => 0,
-    'version' => '1.4.3',
+    'version' => '1.5.0',
     'constraints' => [
         'depends' => [
             'typo3' => '10.4.0-11.5.99',
-            'newt' => '1.7.1-',
+            'newt' => '1.9.0-',
             'news' => '8.0.0-',
         ],
         'conflicts' => [],

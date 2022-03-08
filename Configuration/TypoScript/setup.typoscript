@@ -1,0 +1,61 @@
+plugin.tx_newt4news {
+  settings {
+    istopnews {
+      active = {$plugin.tx_newt4news.settings.istopnews.active}
+    }
+
+    title {
+      active = {$plugin.tx_newt4news.settings.title.active}
+      required = {$plugin.tx_newt4news.settings.title.required}
+    }
+
+    teaser {
+      active = {$plugin.tx_newt4news.settings.teaser.active}
+      required = {$plugin.tx_newt4news.settings.teaser.required}
+    }
+
+    bodytext {
+      active = {$plugin.tx_newt4news.settings.bodytext.active}
+      required = {$plugin.tx_newt4news.settings.bodytext.required}
+    }
+
+    datetime {
+      active = {$plugin.tx_newt4news.settings.datetime.active}
+      required = {$plugin.tx_newt4news.settings.datetime.required}
+    }
+
+    archive {
+      active = {$plugin.tx_newt4news.settings.archive.active}
+      required = {$plugin.tx_newt4news.settings.archive.required}
+    }
+
+    image {
+      active = {$plugin.tx_newt4news.settings.image.active}
+      required = {$plugin.tx_newt4news.settings.image.required}
+    }
+
+    showinpreview {
+      active = {$plugin.tx_newt4news.settings.showinpreview.active}
+    }
+
+    imagealt {
+      active = {$plugin.tx_newt4news.settings.imagealt.active}
+      required = {$plugin.tx_newt4news.settings.imagealt.required}
+    }
+
+    imagedesc {
+      active = {$plugin.tx_newt4news.settings.imagedesc.active}
+      required = {$plugin.tx_newt4news.settings.imagedesc.required}
+    }
+
+    relatedfile {
+      active = {$plugin.tx_newt4news.settings.relatedfile.active}
+      required = {$plugin.tx_newt4news.settings.relatedfile.required}
+    }
+
+    categories {
+      active = {$plugin.tx_newt4news.settings.categories.active}
+      required = {$plugin.tx_newt4news.settings.categories.required}
+    }
+  }
+}
