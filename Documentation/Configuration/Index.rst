@@ -13,37 +13,9 @@ After adding the static, you will find the constants in the Constant editor:
 ======================================  ==========  ==================================================================  =======================================
 Property:                               Data type:  Description:                                                        Default:
 ======================================  ==========  ==================================================================  =======================================
-settings.istopnews.active               boolean     Activates the istopnews in the Endpoint                             1
+settings.field.*                        object      Activate/Deactivate fields
 --------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.title.active                   boolean     Activates the title in the Endpoint                                 1
-settings.title.required                 boolean     Sets the title required                                             1
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.teaser.active                  boolean     Activates the teaser in the Endpoint                                1
-settings.teaser.required                boolean     Sets the teaser required                                            
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.bodytext.active                boolean     Activates the bodytext in the Endpoint                              1
-settings.bodytext.required              boolean     Sets the bodytext required                                          
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.datetime.active                boolean     Activates the datetime in the Endpoint                              1
-settings.datetime.required              boolean     Sets the datetime required                                          
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.archive.active                 boolean     Activates the archive in the Endpoint                               1
-settings.archive.required               boolean     Sets the archive required                                           
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.image.active                   boolean     Activates the image in the Endpoint                                 1
-settings.image.required                 boolean     Sets the image required                                             
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.imagealt.active                boolean     Activates the imagealt in the Endpoint                              1
-settings.imagealt.required              boolean     Sets the imagealt required                                          
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.imagedesc.active               boolean     Activates the imagedesc in the Endpoint                             1
-settings.imagedesc.required             boolean     Sets the imagedesc required                                         
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.relatedfile.active             boolean     Activates the relatedfile in the Endpoint                           1
-settings.relatedfile.required           boolean     Sets the relatedfile required                                       
---------------------------------------  ----------  ------------------------------------------------------------------  ---------------------------------------
-settings.categories.active              boolean     Activates the categories in the Endpoint                            1
-settings.categories.required            boolean     Sets the categories required                                        
+settings.required.*                     object      Sets fields required
 ======================================  ==========  ==================================================================  =======================================
 
 [tsref:plugin.tx_newt4news]

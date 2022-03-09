@@ -1,83 +1,52 @@
 plugin.tx_newt4news {
   settings {
-    istopnews {
-      # cat=plugin.tx_newt4news/settings/010; type=boolean; label=Show top-news
-      active = 1
+    field {
+      # cat=plugin.tx_newt4news/enable/010; type=boolean; label=Show top-news
+      istopnews = 1
+      # cat=plugin.tx_newt4news/enable/020; type=boolean; label=Show Title
+      title = 1
+      # cat=plugin.tx_newt4news/enable/030; type=boolean; label=Show Teaser
+      teaser = 1
+      # cat=plugin.tx_newt4news/enable/040; type=boolean; label=Show Bodytext
+      bodytext = 1
+      # cat=plugin.tx_newt4news/enable/050; type=boolean; label=Show Datetime
+      datetime = 1
+      # cat=plugin.tx_newt4news/enable/060; type=boolean; label=Show Archive
+      archive = 1
+      # cat=plugin.tx_newt4news/enable/070; type=boolean; label=Show Image
+      image = 1
+      # cat=plugin.tx_newt4news/enable/080; type=boolean; label=Show Image in view
+      showinpreview = 1
+      # cat=plugin.tx_newt4news/enable/090; type=boolean; label=Show Imagealt
+      imagealt = 1
+      # cat=plugin.tx_newt4news/enable/100; type=boolean; label=Show Imagedesc
+      imagedesc = 1
+      # cat=plugin.tx_newt4news/enable/110; type=boolean; label=Show Relatedfile
+      relatedfile = 1
+      # cat=plugin.tx_newt4news/enable/120; type=boolean; label=Show Categories
+      categories = 1
     }
-
-    title {
-      # cat=plugin.tx_newt4news/settings/020; type=boolean; label=Title Show
-      active = 1
+    required {
       # cat=plugin.tx_newt4news/settings/025; type=boolean; label=Title required
-      required = 1
-    }
-
-    teaser {
-      # cat=plugin.tx_newt4news/settings/030; type=boolean; label=Teaser Show
-      active = 1
+      title = 1
       # cat=plugin.tx_newt4news/settings/035; type=boolean; label=Teaser required
-      required = 
-    }
-
-    bodytext {
-      # cat=plugin.tx_newt4news/settings/040; type=boolean; label=Bodytext Show
-      active = 1
+      teaser = 
       # cat=plugin.tx_newt4news/settings/045; type=boolean; label=Bodytext required
-      required = 
-    }
-
-    datetime {
-      # cat=plugin.tx_newt4news/settings/050; type=boolean; label=Datetime Show
-      active = 1
+      bodytext = 
       # cat=plugin.tx_newt4news/settings/055; type=boolean; label=Datetime required
-      required = 
-    }
-
-    archive {
-      # cat=plugin.tx_newt4news/settings/060; type=boolean; label=Archive Show
-      active = 1
+      datetime = 
       # cat=plugin.tx_newt4news/settings/065; type=boolean; label=Archive required
-      required = 
-    }
-
-    image {
-      # cat=plugin.tx_newt4news/settings/070; type=boolean; label=Image Show
-      active = 1
+      archive = 
       # cat=plugin.tx_newt4news/settings/075; type=boolean; label=Image required
-      required = 
-    }
-
-    showinpreview {
-      # cat=plugin.tx_newt4news/settings/080; type=boolean; label=Image in view Show
-      active = 1
-    }
-
-    imagealt {
-      # cat=plugin.tx_newt4news/settings/090; type=boolean; label=Imagealt Show
-      active = 1
+      image = 
       # cat=plugin.tx_newt4news/settings/095; type=boolean; label=Imagealt required
-      required = 
-    }
-
-    imagedesc {
-      # cat=plugin.tx_newt4news/settings/100; type=boolean; label=Imagedesc Show
-      active = 1
+      imagealt = 
       # cat=plugin.tx_newt4news/settings/105; type=boolean; label=Imagedesc required
-      required = 
-    }
-
-    relatedfile {
-      # cat=plugin.tx_newt4news/settings/110; type=boolean; label=Relatedfile Show
-      active = 1
+      imagedesc = 
       # cat=plugin.tx_newt4news/settings/115; type=boolean; label=Relatedfile required
-      required = 
-    }
-
-    categories {
-      # cat=plugin.tx_newt4news/settings/120; type=boolean; label=Categories Show
-      active = 1
+      relatedfile = 
       # cat=plugin.tx_newt4news/settings/125; type=boolean; label=Categories required
-      required = 
+      categories = 
     }
   }
 }

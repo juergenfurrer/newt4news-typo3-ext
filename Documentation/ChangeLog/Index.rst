@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 1.6.0
+-------------
+Improve constants
+
 Version 1.5.0
 -------------
 Add constants and more fields

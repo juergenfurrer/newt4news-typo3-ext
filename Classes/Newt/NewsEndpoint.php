@@ -51,10 +51,10 @@ class NewsEndpoint implements EndpointInterface
     /**
      * Return the settings of this plugin
      */
-    private function getSetting(string $key, string $childKey)
+    private function getSetting(string $key, string $type)
     {
-        if ($this->settings && isset($this->settings[$key."."]) && isset($this->settings[$key."."][$childKey])) {
-            return $this->settings[$key."."][$childKey];
+        if ($this->settings && isset($this->settings[$type."."]) && isset($this->settings[$type."."][$key])) {
+            return $this->settings[$type."."][$key];
         }
         return '';
     }
@@ -76,23 +76,23 @@ class NewsEndpoint implements EndpointInterface
 
         $news = new News();
 
-        if (boolval($this->getSetting('istopnews', 'active')) && isset($params["istopnews"])) {
+        if (boolval($this->getSetting('istopnews', 'field')) && isset($params["istopnews"])) {
             $news->setIstopnews($params["istopnews"]);
         }
 
-        if (boolval($this->getSetting('title', 'active')) && isset($params["title"])) {
+        if (boolval($this->getSetting('title', 'field')) && isset($params["title"])) {
             $news->setTitle($params["title"]);
         }
 
-        if (boolval($this->getSetting('teaser', 'active')) && isset($params["teaser"])) {
+        if (boolval($this->getSetting('teaser', 'field')) && isset($params["teaser"])) {
             $news->setTeaser($params["teaser"]);
         }
 
-        if (boolval($this->getSetting('bodytext', 'active')) && isset($params["bodytext"])) {
+        if (boolval($this->getSetting('bodytext', 'field')) && isset($params["bodytext"])) {
             $news->setBodytext($params["bodytext"]);
         }
 
-        if (boolval($this->getSetting('datetime', 'active')) && isset($params["datetime"])) {
+        if (boolval($this->getSetting('datetime', 'field')) && isset($params["datetime"])) {
             /** @var DateTime */
             $dateTime = $params["datetime"];
             $now = new DateTime();
@@ -106,7 +106,7 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
-        if (boolval($this->getSetting('archive', 'active')) && isset($params["archive"])) {
+        if (boolval($this->getSetting('archive', 'field')) && isset($params["archive"])) {
             /** @var DateTime */
             $dateTime = $params["archive"];
             $now = new DateTime();
@@ -120,20 +120,20 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
-        if (boolval($this->getSetting('image', 'active')) && isset($params["image"])) {
+        if (boolval($this->getSetting('image', 'field')) && isset($params["image"])) {
             if ($params["image"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
                 /** @var \Infonique\Newt\Domain\Model\FileReference */
                 $imageRef = $params["image"];
                 /** @var \GeorgRinger\News\Domain\Model\FileReference */
                 $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
                 $fileReference->setFileUid($imageRef->getUidLocal());
-                if (boolval($this->getSetting('showinpreview', 'active')) && isset($params["showinpreview"])) {
+                if (boolval($this->getSetting('showinpreview', 'field')) && isset($params["showinpreview"])) {
                     $fileReference->setShowinpreview(intval($params["showinpreview"]));
                 }
-                if (boolval($this->getSetting('imagealt', 'active')) && isset($params["imagealt"])) {
+                if (boolval($this->getSetting('imagealt', 'field')) && isset($params["imagealt"])) {
                     $fileReference->setAlternative($params["imagealt"]);
                 }
-                if (boolval($this->getSetting('imagedesc', 'active')) && isset($params["imagedesc"])) {
+                if (boolval($this->getSetting('imagedesc', 'field')) && isset($params["imagedesc"])) {
                     $fileReference->setDescription($params["imagedesc"]);
                 }
 
@@ -141,7 +141,7 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
-        if (boolval($this->getSetting('relatedfile', 'active')) && isset($params["relatedfile"])) {
+        if (boolval($this->getSetting('relatedfile', 'field')) && isset($params["relatedfile"])) {
             if ($params["relatedfile"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
                 /** @var \Infonique\Newt\Domain\Model\FileReference */
                 $imageRef = $params["relatedfile"];
@@ -152,7 +152,7 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
-        if (boolval($this->getSetting('categories', 'active')) && isset($params["categories"])) {
+        if (boolval($this->getSetting('categories', 'field')) && isset($params["categories"])) {
             $categories = json_decode($params["categories"]);
             if (is_countable($categories)) {
                 foreach ($categories as $catId) {
@@ -236,7 +236,7 @@ class NewsEndpoint implements EndpointInterface
 
         $ret = [];
 
-        if (boolval($this->getSetting('istopnews', 'active'))) {
+        if (boolval($this->getSetting('istopnews', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.istopnews');
             $istopnews = new Field();
             $istopnews->setName("istopnews");
@@ -245,7 +245,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $istopnews;
         }
 
-        if (boolval($this->getSetting('title', 'active'))) {
+        if (boolval($this->getSetting('title', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel');
             $title = new Field();
             $title->setName("title");
@@ -257,7 +257,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $title;
         }
 
-        if (boolval($this->getSetting('teaser', 'active'))) {
+        if (boolval($this->getSetting('teaser', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.teaser');
             $teaser = new Field();
             $teaser->setName("teaser");
@@ -269,7 +269,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $teaser;
         }
 
-        if (boolval($this->getSetting('bodytext', 'active'))) {
+        if (boolval($this->getSetting('bodytext', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext_formlabel');
             $bodytext = new Field();
             $bodytext->setName("bodytext");
@@ -281,7 +281,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $bodytext;
         }
 
-        if (boolval($this->getSetting('datetime', 'active'))) {
+        if (boolval($this->getSetting('datetime', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.datetime');
             $datetime = new Field();
             $datetime->setName("datetime");
@@ -293,7 +293,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $datetime;
         }
 
-        if (boolval($this->getSetting('archive', 'active'))) {
+        if (boolval($this->getSetting('archive', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.archive');
             $archive = new Field();
             $archive->setName("archive");
@@ -305,7 +305,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $archive;
         }
 
-        if (boolval($this->getSetting('image', 'active'))) {
+        if (boolval($this->getSetting('image', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_media');
             $image = new Field();
             $image->setName("image");
@@ -317,7 +317,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $image;
         }
 
-        if (boolval($this->getSetting('showinpreview', 'active'))) {
+        if (boolval($this->getSetting('showinpreview', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews');
             $showinpreview = new Field();
             $showinpreview->setName("showinpreview");
@@ -330,7 +330,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $showinpreview;
         }
 
-        if (boolval($this->getSetting('imagealt', 'active'))) {
+        if (boolval($this->getSetting('imagealt', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative');
             $imagealt = new Field();
             $imagealt->setName("imagealt");
@@ -342,7 +342,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $imagealt;
         }
 
-        if (boolval($this->getSetting('imagedesc', 'active'))) {
+        if (boolval($this->getSetting('imagedesc', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.description');
             $imagedesc = new Field();
             $imagedesc->setName("imagedesc");
@@ -354,7 +354,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $imagedesc;
         }
 
-        if (boolval($this->getSetting('relatedfile', 'active'))) {
+        if (boolval($this->getSetting('relatedfile', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_related_files');
             $relatedfile = new Field();
             $relatedfile->setName("relatedfile");
@@ -366,7 +366,7 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $relatedfile;
         }
 
-        if (boolval($this->getSetting('categories', 'active'))) {
+        if (boolval($this->getSetting('categories', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.categories');
             $categories = new Field();
             $categories->setName("categories");
