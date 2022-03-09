@@ -11,8 +11,8 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "typo3/cms-core": "^11.5 || ^10.4",
-        "infonique/newt": "^1.0.0",
-        "georgringer/news": "^9.0.0"
+        "infonique/newt": "^1.9.0",
+        "georgringer/news": "^8.0.0"
     },
     "autoload": {
         "psr-4": {
