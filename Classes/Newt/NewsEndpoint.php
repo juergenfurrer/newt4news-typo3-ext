@@ -620,12 +620,12 @@ class NewsEndpoint implements EndpointInterface
         }
 
         if (boolval($this->getSetting('image', 'field'))) {
-            $devider = new Field();
-            $devider->setType(FieldType::DIVIDOR);
+            $divider = new Field();
+            $divider->setType(FieldType::DIVIDER);
 
             if (count($ret) > 0) {
-                // Add the dividor
-                $ret[] = $devider;
+                // Add the divider
+                $ret[] = $divider;
             }
 
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_media');
@@ -676,8 +676,8 @@ class NewsEndpoint implements EndpointInterface
                 $ret[] = $imagedesc;
             }
 
-            // Add the dividor
-            $ret[] = $devider;
+            // Add the divider
+            $ret[] = $divider;
         }
 
 
