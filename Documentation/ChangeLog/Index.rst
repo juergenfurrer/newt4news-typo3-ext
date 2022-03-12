@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 1.7.0
+-------------
+Add all CRUD methods
+
 Version 1.6.0
 -------------
 Improve constants

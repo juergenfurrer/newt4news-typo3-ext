@@ -27,26 +27,30 @@ plugin.tx_newt4news {
       categories = 1
     }
     required {
-      # cat=plugin.tx_newt4news/settings/025; type=boolean; label=Title required
+      # cat=plugin.tx_newt4news/settings/010; type=boolean; label=Title required
       title = 1
-      # cat=plugin.tx_newt4news/settings/035; type=boolean; label=Teaser required
+      # cat=plugin.tx_newt4news/settings/020; type=boolean; label=Teaser required
       teaser = 
-      # cat=plugin.tx_newt4news/settings/045; type=boolean; label=Bodytext required
+      # cat=plugin.tx_newt4news/settings/030; type=boolean; label=Bodytext required
       bodytext = 
-      # cat=plugin.tx_newt4news/settings/055; type=boolean; label=Datetime required
+      # cat=plugin.tx_newt4news/settings/040; type=boolean; label=Datetime required
       datetime = 
-      # cat=plugin.tx_newt4news/settings/065; type=boolean; label=Archive required
+      # cat=plugin.tx_newt4news/settings/050; type=boolean; label=Archive required
       archive = 
-      # cat=plugin.tx_newt4news/settings/075; type=boolean; label=Image required
+      # cat=plugin.tx_newt4news/settings/060; type=boolean; label=Image required
       image = 
-      # cat=plugin.tx_newt4news/settings/095; type=boolean; label=Imagealt required
+      # cat=plugin.tx_newt4news/settings/070; type=boolean; label=Imagealt required
       imagealt = 
-      # cat=plugin.tx_newt4news/settings/105; type=boolean; label=Imagedesc required
+      # cat=plugin.tx_newt4news/settings/080; type=boolean; label=Imagedesc required
       imagedesc = 
-      # cat=plugin.tx_newt4news/settings/115; type=boolean; label=Relatedfile required
+      # cat=plugin.tx_newt4news/settings/090; type=boolean; label=Relatedfile required
       relatedfile = 
-      # cat=plugin.tx_newt4news/settings/125; type=boolean; label=Categories required
+      # cat=plugin.tx_newt4news/settings/100; type=boolean; label=Categories required
       categories = 
+    }
+    value {
+      # cat=plugin.tx_newt4news/dims/010; type=options[Empty=,Show only in detail views=0, Show in all views=1, Show only in list views=2]; label=Show in Preview value
+      showinpreview = 
     }
   }
 }

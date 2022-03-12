@@ -16,18 +16,18 @@ Newt4News
 |release|
 
 :Language:
-    en
+   en
 
 :Authors:
-    Jürgen Furrer
+   Jürgen Furrer
 
 :Email:
-    juergen@infonique.ch
+   juergen@infonique.ch
 
 :License:
-    This extension documentation is published under the
-    `CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__ (Creative Commons)
-    license
+   This extension documentation is published under the
+   `CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__ (Creative Commons)
+   license
 
 This TYPO3 extension adds the NEWT-Endpoint for the extension News and allows you to manage your
 TYPO3 news via the NEWT Mobile App.
@@ -56,11 +56,11 @@ You are welcome to help improve this guide.
 Just click on "Edit me on GitHub" on the top right to submit your change request.
 
 .. toctree::
-    :maxdepth: 3
+   :maxdepth: 3
 
-    Introduction/Index
-    Installation/Index
-    Configuration/Index
-    KnownProblems/Index
-    ChangeLog/Index
-    Sitemap
+   Introduction/Index
+   Installation/Index
+   Configuration/Index
+   KnownProblems/Index
+   ChangeLog/Index
+   Sitemap

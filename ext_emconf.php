@@ -8,11 +8,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'juergen@infonique.ch',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
-    'version' => '1.6.0',
+    'version' => '1.7.0',
     'constraints' => [
         'depends' => [
             'typo3' => '10.4.0-11.5.99',
-            'newt' => '1.9.0-',
+            'newt' => '1.9.2-',
             'news' => '8.0.0-',
         ],
         'conflicts' => [],

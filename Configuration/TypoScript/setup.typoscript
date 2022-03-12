@@ -26,5 +26,8 @@ plugin.tx_newt4news {
       relatedfile = {$plugin.tx_newt4news.settings.required.relatedfile}
       categories = {$plugin.tx_newt4news.settings.required.categories}
     }
+    value {
+      showinpreview = {$plugin.tx_newt4news.settings.value.showinpreview}
+    }
   }
 }
