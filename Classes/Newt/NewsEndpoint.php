@@ -88,8 +88,8 @@ class NewsEndpoint implements EndpointInterface
         if (boolval($this->getSetting('datetime', 'field')) && isset($params["datetime"])) {
             /** @var DateTime */
             $dateTime = $params["datetime"];
-            $now = new DateTime();
-            if ($dateTime) {
+            if (!empty($dateTime)) {
+                $now = new DateTime();
                 /** @var DateInterval */
                 $age = $dateTime->diff($now);
                 if ($age->y > 100) {
@@ -101,13 +101,13 @@ class NewsEndpoint implements EndpointInterface
 
         if (boolval($this->getSetting('archive', 'field')) && isset($params["archive"])) {
             /** @var DateTime */
-            $dateTime = $params["archive"];
-            $now = new DateTime();
-            if ($dateTime) {
+            $archive = $params["archive"];
+            if (!empty($archive)) {
+                $now = new DateTime();
                 /** @var DateInterval */
-                $age = $dateTime->diff($now);
+                $age = $archive->diff($now);
                 if ($age->y > 100) {
-                    $dateTime = $now;
+                    $archive = $now;
                 }
                 $news->setArchive($params["archive"]);
             }
