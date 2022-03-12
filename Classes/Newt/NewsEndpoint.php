@@ -192,8 +192,8 @@ class NewsEndpoint implements EndpointInterface
 
     /**
      * Read a news-item by readId
-     * 
-     * @param MethodUpdateModel $model
+     *
+     * @param MethodReadModel $model
      * @return Item
      */
     public function methodRead(MethodReadModel $model): Item
@@ -321,7 +321,7 @@ class NewsEndpoint implements EndpointInterface
 
     /**
      * Update the news-entry with the new data
-     * 
+     *
      * @param MethodUpdateModel $model
      * @return Item
      */
@@ -466,7 +466,7 @@ class NewsEndpoint implements EndpointInterface
 
     /**
      * Deletes a news-item by deleteId
-     * 
+     *
      * @param MethodDeleteModel $model
      * @return boolean
      */
@@ -488,7 +488,7 @@ class NewsEndpoint implements EndpointInterface
 
     /**
      * Returns a list of list-items
-     * 
+     *
      * @param MethodListModel $model
      * @return array
      */
