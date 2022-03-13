@@ -7,6 +7,7 @@ namespace Infonique\Newt4News\Newt;
 use DateInterval;
 use DateTime;
 use GeorgRinger\News\Domain\Model\Category;
+use GeorgRinger\News\Domain\Model\Dto\NewsDemand;
 use GeorgRinger\News\Domain\Model\FileReference;
 use GeorgRinger\News\Domain\Model\News;
 use GeorgRinger\News\Domain\Repository\CategoryRepository;
@@ -498,24 +499,42 @@ class NewsEndpoint implements EndpointInterface
 
         $pageSize = $model->getPageSize();
 
-        $start = 0;
+        $startUid = 0;
         if (intval($model->getLastKnownItemId()) > 0) {
-            $start = intval($model->getLastKnownItemId());
+            $startUid = intval($model->getLastKnownItemId());
         }
 
-        $news = $this->newsRepository->findAll()->toArray();
+        /** @var NewsDemand */
+        $demand = GeneralUtility::makeInstance(NewsDemand::class);
 
-        for ($i = $start; $i < ($start + $pageSize); $i++) {
-            if ($i < count($news)) {
+        $orderField = $this->getSetting('orderField', 'list');
+        $orderDirection = $this->getSetting('orderDirection', 'list');
+        if (!empty($orderField) && !empty($orderDirection)) {
+            $demand->setOrder("{$orderField} {$orderDirection}");
+            $demand->setOrderByAllowed("{$orderField},{$orderField} {$orderDirection}");
+        }
+
+        if ($model->getPageUid() > 0) {
+            $demand->setStoragePage(strval($model->getPageUid()));
+        }
+
+        $news = $this->newsRepository->findDemanded($demand)->toArray();
+
+        $useItems = $startUid < 1;
+        /** @var News $newsItem */
+        foreach ($news as $newsItem) {
+            if ($useItems) {
                 $item = new Item();
-                /** @var News */
-                $newsItem = $news[$i];
-                if ($newsItem) {
-                    $item->setId(strval($newsItem->getUid()));
-                    $item->setTitle(strval($newsItem->getTitle()));
-                    $item->setDescription(strval($newsItem->getTeaser()));
-                    $items[] = $item;
-                }
+                $item->setId(strval($newsItem->getUid()));
+                $item->setTitle(strval($newsItem->getTitle()));
+                $item->setDescription(strval($newsItem->getTeaser()));
+                $items[] = $item;
+            }
+            if ($startUid == 0 || $newsItem->getUid() == $startUid) {
+                $useItems = true;
+            }
+            if ($pageSize > 0 && count($items) >= $pageSize) {
+                $useItems = false;
             }
         }
 

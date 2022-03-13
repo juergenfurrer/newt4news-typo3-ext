@@ -38,7 +38,7 @@ settings.required.*                    boolean     Sets fields required
                                                       title = 1
                                                       teaser =
                                                       bodytext =
-                                                      datetime =
+                                                      datetime = 1
                                                       archive =
                                                       image =
                                                       imagealt =
@@ -52,7 +52,13 @@ settings.value.*                       mixed       Sets fields default-value
                                                    .. code-block:: ts
 
                                                       showinpreview =
+-------------------------------------  ----------  ----------------------------------------------------------------
+settings.list.*                        string      Order for news-list
 
+                                                   .. code-block:: ts
+
+                                                      orderField = uid
+                                                      orderDirection = desc
 =====================================  ==========  ================================================================
 
 [tsref:plugin.tx_newt4news]

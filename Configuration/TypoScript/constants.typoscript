@@ -30,27 +30,33 @@ plugin.tx_newt4news {
       # cat=plugin.tx_newt4news/settings/010; type=boolean; label=Title required
       title = 1
       # cat=plugin.tx_newt4news/settings/020; type=boolean; label=Teaser required
-      teaser = 
+      teaser =
       # cat=plugin.tx_newt4news/settings/030; type=boolean; label=Bodytext required
-      bodytext = 
+      bodytext =
       # cat=plugin.tx_newt4news/settings/040; type=boolean; label=Datetime required
-      datetime = 
+      datetime = 1
       # cat=plugin.tx_newt4news/settings/050; type=boolean; label=Archive required
-      archive = 
+      archive =
       # cat=plugin.tx_newt4news/settings/060; type=boolean; label=Image required
-      image = 
+      image =
       # cat=plugin.tx_newt4news/settings/070; type=boolean; label=Imagealt required
-      imagealt = 
+      imagealt =
       # cat=plugin.tx_newt4news/settings/080; type=boolean; label=Imagedesc required
-      imagedesc = 
+      imagedesc =
       # cat=plugin.tx_newt4news/settings/090; type=boolean; label=Relatedfile required
-      relatedfile = 
+      relatedfile =
       # cat=plugin.tx_newt4news/settings/100; type=boolean; label=Categories required
-      categories = 
+      categories =
     }
     value {
       # cat=plugin.tx_newt4news/dims/010; type=options[Empty=,Show only in detail views=0, Show in all views=1, Show only in list views=2]; label=Show in Preview value
-      showinpreview = 
+      showinpreview =
+    }
+    list {
+      # cat=plugin.tx_newt4news/settings/110; type=string; label=Order field for news-list (valid field from news)
+      orderField = uid
+      # cat=plugin.tx_newt4news/settings/120; type=options[asc,desc]; label=Order direction for news-list (asc desc)
+      orderDirection = desc
     }
   }
 }
