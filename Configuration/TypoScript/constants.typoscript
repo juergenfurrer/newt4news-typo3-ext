@@ -1,61 +1,72 @@
+## Custom Sub-Categories
+# customsubcategory=newt4news_fields=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_fields
+# customsubcategory=newt4news_required=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_required
+# customsubcategory=newt4news_value=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_value
+# customsubcategory=newt4news_list=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_list
+# customsubcategory=newt4news_options=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_options
+
 plugin.tx_newt4news {
   settings {
     field {
-      # cat=plugin.tx_newt4news/enable/010; type=boolean; label=Show top-news
+      # cat=plugin.tx_newt4news/newt4news_fields/010; type=boolean; label=Show top-news
       istopnews = 1
-      # cat=plugin.tx_newt4news/enable/020; type=boolean; label=Show Title
+      # cat=plugin.tx_newt4news/newt4news_fields/020; type=boolean; label=Show Title
       title = 1
-      # cat=plugin.tx_newt4news/enable/030; type=boolean; label=Show Teaser
+      # cat=plugin.tx_newt4news/newt4news_fields/030; type=boolean; label=Show Teaser
       teaser = 1
-      # cat=plugin.tx_newt4news/enable/040; type=boolean; label=Show Bodytext
+      # cat=plugin.tx_newt4news/newt4news_fields/040; type=boolean; label=Show Bodytext
       bodytext = 1
-      # cat=plugin.tx_newt4news/enable/050; type=boolean; label=Show Datetime
+      # cat=plugin.tx_newt4news/newt4news_fields/050; type=boolean; label=Show Datetime
       datetime = 1
-      # cat=plugin.tx_newt4news/enable/060; type=boolean; label=Show Archive
+      # cat=plugin.tx_newt4news/newt4news_fields/060; type=boolean; label=Show Archive
       archive = 1
-      # cat=plugin.tx_newt4news/enable/070; type=boolean; label=Show Image
+      # cat=plugin.tx_newt4news/newt4news_fields/070; type=boolean; label=Show Image
       image = 1
-      # cat=plugin.tx_newt4news/enable/080; type=boolean; label=Show Image in view
+      # cat=plugin.tx_newt4news/newt4news_fields/080; type=boolean; label=Show Image in view
       showinpreview = 1
-      # cat=plugin.tx_newt4news/enable/090; type=boolean; label=Show Imagealt
+      # cat=plugin.tx_newt4news/newt4news_fields/090; type=boolean; label=Show Imagealt
       imagealt = 1
-      # cat=plugin.tx_newt4news/enable/100; type=boolean; label=Show Imagedesc
+      # cat=plugin.tx_newt4news/newt4news_fields/100; type=boolean; label=Show Imagedesc
       imagedesc = 1
-      # cat=plugin.tx_newt4news/enable/110; type=boolean; label=Show Relatedfile
+      # cat=plugin.tx_newt4news/newt4news_fields/110; type=boolean; label=Show Relatedfile
       relatedfile = 1
-      # cat=plugin.tx_newt4news/enable/120; type=boolean; label=Show Categories
+      # cat=plugin.tx_newt4news/newt4news_fields/120; type=boolean; label=Show Categories
       categories = 1
     }
     required {
-      # cat=plugin.tx_newt4news/settings/010; type=boolean; label=Title required
+      # cat=plugin.tx_newt4news/newt4news_required/010; type=boolean; label=Title required
       title = 1
-      # cat=plugin.tx_newt4news/settings/020; type=boolean; label=Teaser required
+      # cat=plugin.tx_newt4news/newt4news_required/020; type=boolean; label=Teaser required
       teaser =
-      # cat=plugin.tx_newt4news/settings/030; type=boolean; label=Bodytext required
+      # cat=plugin.tx_newt4news/newt4news_required/030; type=boolean; label=Bodytext required
       bodytext =
-      # cat=plugin.tx_newt4news/settings/040; type=boolean; label=Datetime required
+      # cat=plugin.tx_newt4news/newt4news_required/040; type=boolean; label=Datetime required
       datetime = 1
-      # cat=plugin.tx_newt4news/settings/050; type=boolean; label=Archive required
+      # cat=plugin.tx_newt4news/newt4news_required/050; type=boolean; label=Archive required
       archive =
-      # cat=plugin.tx_newt4news/settings/060; type=boolean; label=Image required
+      # cat=plugin.tx_newt4news/newt4news_required/060; type=boolean; label=Image required
       image =
-      # cat=plugin.tx_newt4news/settings/070; type=boolean; label=Imagealt required
+      # cat=plugin.tx_newt4news/newt4news_required/070; type=boolean; label=Imagealt required
       imagealt =
-      # cat=plugin.tx_newt4news/settings/080; type=boolean; label=Imagedesc required
+      # cat=plugin.tx_newt4news/newt4news_required/080; type=boolean; label=Imagedesc required
       imagedesc =
-      # cat=plugin.tx_newt4news/settings/090; type=boolean; label=Relatedfile required
+      # cat=plugin.tx_newt4news/newt4news_required/090; type=boolean; label=Relatedfile required
       relatedfile =
-      # cat=plugin.tx_newt4news/settings/100; type=boolean; label=Categories required
+      # cat=plugin.tx_newt4news/newt4news_required/100; type=boolean; label=Categories required
       categories =
     }
     value {
-      # cat=plugin.tx_newt4news/dims/010; type=options[Empty=,Show only in detail views=0, Show in all views=1, Show only in list views=2]; label=Show in Preview value
+      # cat=plugin.tx_newt4news/newt4news_value/010; type=options[Empty=,Show only in detail views=0, Show in all views=1, Show only in list views=2]; label=Show in Preview value
       showinpreview =
     }
+    options {
+      # cat=plugin.tx_newt4news/newt4news_options/010; type=boolean; label=Activate HTML for bodytext
+      useHtml =
+    }
     list {
-      # cat=plugin.tx_newt4news/settings/110; type=string; label=Order field for news-list (valid field from news)
+      # cat=plugin.tx_newt4news/newt4news_list/010; type=string; label=Order field for news-list (valid field from news)
       orderField = uid
-      # cat=plugin.tx_newt4news/settings/120; type=options[asc,desc]; label=Order direction for news-list (asc desc)
+      # cat=plugin.tx_newt4news/newt4news_list/020; type=options[asc,desc]; label=Order direction for news-list (asc desc)
       orderDirection = desc
     }
   }

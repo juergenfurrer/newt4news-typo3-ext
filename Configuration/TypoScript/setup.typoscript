@@ -29,6 +29,9 @@ plugin.tx_newt4news {
     value {
       showinpreview = {$plugin.tx_newt4news.settings.value.showinpreview}
     }
+    options {
+      useHtml = {$plugin.tx_newt4news.settings.options.useHtml}
+    }
     list {
       orderField = {$plugin.tx_newt4news.settings.list.orderField}
       orderDirection = {$plugin.tx_newt4news.settings.list.orderDirection}

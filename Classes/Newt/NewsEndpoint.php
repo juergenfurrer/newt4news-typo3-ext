@@ -638,7 +638,11 @@ class NewsEndpoint implements EndpointInterface
             $bodytext = new Field();
             $bodytext->setName("bodytext");
             $bodytext->setLabel($label);
-            $bodytext->setType(FieldType::HTML);
+            if (boolval($this->getSetting('useHtml', 'options'))) {
+                $bodytext->setType(FieldType::HTML);
+            } else {
+                $bodytext->setType(FieldType::TEXTAREA);
+            }
             if (boolval($this->getSetting('bodytext', 'required'))) {
                 $bodytext->setValidation($required);
             }

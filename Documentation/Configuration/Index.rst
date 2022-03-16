@@ -53,6 +53,12 @@ settings.value.*                       mixed       Sets fields default-value
 
                                                       showinpreview =
 -------------------------------------  ----------  ----------------------------------------------------------------
+settings.options.*                     mixed       Set additional options
+
+                                                   .. code-block:: ts
+
+                                                      useHtml =
+-------------------------------------  ----------  ----------------------------------------------------------------
 settings.list.*                        string      Order for news-list
 
                                                    .. code-block:: ts
