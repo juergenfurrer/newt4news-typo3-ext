@@ -259,6 +259,7 @@ class NewsEndpoint implements EndpointInterface
                         $file = $storage->getFile($identifier);
                         if ($file) {
                             $fileContent = $file->getContents();
+                            $item->addValue(new ItemValue("imageUid", strval($falMedia->getUid())));
                             $item->addValue(new ItemValue("image", base64_encode($fileContent)));
                         }
                     }
@@ -301,6 +302,7 @@ class NewsEndpoint implements EndpointInterface
                         $file = $storage->getFile($identifier);
                         if ($file) {
                             $fileContent = $file->getContents();
+                            $item->addValue(new ItemValue("relatedfileUid", strval($falRelatedFiles->getUid())));
                             $item->addValue(new ItemValue("relatedfile", base64_encode($fileContent)));
                         }
                     }
@@ -388,40 +390,69 @@ class NewsEndpoint implements EndpointInterface
         }
 
         if (boolval($this->getSetting('image', 'field'))) {
-            // Remove the images
-            // TODO: is this correct?
-            $news->setFalMedia(new ObjectStorage());
+            $falMedias = $news->getFalMedia();
+            /** @var \GeorgRinger\News\Domain\Model\FileReference */
+            $usedMedia = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
+            $isNew = true;
+            if (isset($params["imageUid"]) && intval($params["imageUid"]) > 0) {
+                foreach ($falMedias as $falMedia) {
+                    if ($falMedia->getUid() == intval($params["imageUid"])) {
+                        /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                        $usedMedia = $falMedia;
+                        $isNew = false;
+                        continue;
+                    }
+                }
+            }
             if (isset($params["image"]) && $params["image"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
                 /** @var \Infonique\Newt\Domain\Model\FileReference */
                 $imageRef = $params["image"];
-                /** @var \GeorgRinger\News\Domain\Model\FileReference */
-                $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
-                $fileReference->setFileUid($imageRef->getUidLocal());
+
+                $usedMedia->setFileUid($imageRef->getUidLocal());
                 if (boolval($this->getSetting('showinpreview', 'field')) && isset($params["showinpreview"])) {
-                    $fileReference->setShowinpreview(intval($params["showinpreview"]));
+                    $usedMedia->setShowinpreview(intval($params["showinpreview"]));
                 }
                 if (boolval($this->getSetting('imagealt', 'field')) && isset($params["imagealt"])) {
-                    $fileReference->setAlternative($params["imagealt"]);
+                    $usedMedia->setAlternative($params["imagealt"]);
                 }
                 if (boolval($this->getSetting('imagedesc', 'field')) && isset($params["imagedesc"])) {
-                    $fileReference->setDescription($params["imagedesc"]);
+                    $usedMedia->setDescription($params["imagedesc"]);
                 }
 
-                $news->addFalMedia($fileReference);
+                if ($isNew) {
+                    $news->addFalMedia($usedMedia);
+                }
+            } else if (isset($params["imageUid"]) && intval($params["imageUid"]) > 0 && ! $isNew) {
+                // Remove image
+                $falMedias->detach($usedMedia);
             }
         }
 
         if (boolval($this->getSetting('relatedfile', 'field'))) {
-            // Remove the images
-            // TODO: is this correct? Only remove first image...
-            $news->setFalRelatedFiles(new ObjectStorage());
+            $falFiles = $news->getFalRelatedFiles();
+            /** @var \GeorgRinger\News\Domain\Model\FileReference */
+            $usedFile = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
+            $isNew = true;
+            if (isset($params["relatedfileUid"]) && intval($params["relatedfileUid"]) > 0) {
+                foreach ($falFiles as $falFile) {
+                    if ($falFile->getUid() == intval($params["relatedfileUid"])) {
+                        /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                        $usedFile = $falFile;
+                        $isNew = false;
+                        continue;
+                    }
+                }
+            }
             if (isset($params["relatedfile"]) && $params["relatedfile"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
                 /** @var \Infonique\Newt\Domain\Model\FileReference */
-                $imageRef = $params["relatedfile"];
-                /** @var \GeorgRinger\News\Domain\Model\FileReference */
-                $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
-                $fileReference->setFileUid($imageRef->getUidLocal());
-                $news->addFalRelatedFile($fileReference);
+                $fileRef = $params["relatedfile"];
+                $usedFile->setFileUid($fileRef->getUidLocal());
+                if ($isNew) {
+                    $news->addFalRelatedFile($usedFile);
+                }
+            } else if (isset($params["relatedfileUid"]) && intval($params["relatedfileUid"]) > 0 && ! $isNew) {
+                // Remove File
+                $falFiles->detach($usedFile);
             }
         }
 
@@ -607,7 +638,7 @@ class NewsEndpoint implements EndpointInterface
             $bodytext = new Field();
             $bodytext->setName("bodytext");
             $bodytext->setLabel($label);
-            $bodytext->setType(FieldType::TEXTAREA);
+            $bodytext->setType(FieldType::HTML);
             if (boolval($this->getSetting('bodytext', 'required'))) {
                 $bodytext->setValidation($required);
             }
@@ -646,6 +677,11 @@ class NewsEndpoint implements EndpointInterface
                 // Add the divider
                 $ret[] = $divider;
             }
+
+            $imageUid = new Field();
+            $imageUid->setName("imageUid");
+            $imageUid->setType(FieldType::HIDDEN);
+            $ret[] = $imageUid;
 
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_media');
             $image = new Field();
@@ -701,6 +737,11 @@ class NewsEndpoint implements EndpointInterface
 
 
         if (boolval($this->getSetting('relatedfile', 'field'))) {
+            $relatedfileUid = new Field();
+            $relatedfileUid->setName("relatedfileUid");
+            $relatedfileUid->setType(FieldType::HIDDEN);
+            $ret[] = $relatedfileUid;
+
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_related_files');
             $relatedfile = new Field();
             $relatedfile->setName("relatedfile");

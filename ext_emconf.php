@@ -7,12 +7,12 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Juergen Furrer',
     'author_email' => 'juergen@infonique.ch',
     'state' => 'beta',
-    'clearCacheOnLoad' => 0,
-    'version' => '1.7.0',
+    'clearCacheOnLoad' => true,
+    'version' => '1.7.1',
     'constraints' => [
         'depends' => [
             'typo3' => '10.4.0-11.5.99',
-            'newt' => '1.9.2-',
+            'newt' => '1.9.3-',
             'news' => '8.0.0-',
         ],
         'conflicts' => [],

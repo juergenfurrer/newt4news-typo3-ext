@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 1.7.1
+-------------
+Use HTML-field / Fix file-update
+
 Version 1.7.0
 -------------
 Add all CRUD methods
