@@ -10,62 +10,41 @@ To configurate this extension, you have to add the static template of Newt4News
 
 After adding the static, you will find the constants in the Constant editor:
 
-=====================================  ==========  ================================================================
-Property:                              Data type:  Description:
-=====================================  ==========  ================================================================
-settings.field.*                       boolean     Activate/Deactivate fields
-
-                                                   .. code-block:: ts
-
-                                                      istopnews = 1
-                                                      title = 1
-                                                      teaser = 1
-                                                      bodytext = 1
-                                                      datetime = 1
-                                                      archive = 1
-                                                      image = 1
-                                                      showinpreview = 1
-                                                      imagealt = 1
-                                                      imagedesc = 1
-                                                      relatedfile = 1
-                                                      categories = 1
-
--------------------------------------  ----------  ----------------------------------------------------------------
-settings.required.*                    boolean     Sets fields required
-
-                                                   .. code-block:: ts
-
-                                                      title = 1
-                                                      teaser =
-                                                      bodytext =
-                                                      datetime = 1
-                                                      archive =
-                                                      image =
-                                                      imagealt =
-                                                      imagedesc =
-                                                      relatedfile =
-                                                      categories =
-
--------------------------------------  ----------  ----------------------------------------------------------------
-settings.value.*                       mixed       Sets fields default-value
-
-                                                   .. code-block:: ts
-
-                                                      showinpreview =
--------------------------------------  ----------  ----------------------------------------------------------------
-settings.options.*                     mixed       Set additional options
-
-                                                   .. code-block:: ts
-
-                                                      useHtml =
--------------------------------------  ----------  ----------------------------------------------------------------
-settings.list.*                        string      Order for news-list
-
-                                                   .. code-block:: ts
-
-                                                      orderField = uid
-                                                      orderDirection = desc
-=====================================  ==========  ================================================================
+=====================================  ==========  ================================================================  =======================================
+Property:                              Data type:  Description:                                                      Default:
+=====================================  ==========  ================================================================  =======================================
+settings.field.istopnews               boolean     Set visibility for Top-News in the from                           1
+settings.field.title                   boolean     Set visibility for Title in the from                              1
+settings.field.teaser                  boolean     Set visibility for Teaser in the from                             1
+settings.field.bodytext                boolean     Set visibility for Bodytext in the from                           1
+settings.field.datetime                boolean     Set visibility for Datetime in the from                           1
+settings.field.archive                 boolean     Set visibility for Archive-Datetime in the from                   1
+settings.field.image                   integer     Set count of images in the from                                   1 (0-6)
+settings.field.showinpreview           integer     Set count of "Show in preview" in the from                        1 (0-6)
+settings.field.imagealt                integer     Set count of Image-Alternative in the from                        1 (0-6)
+settings.field.imagedesc               integer     Set count of Image-Description in the from                        1 (0-6)
+settings.field.relatedfile             integer     Set count of Related-Files in the from                            1 (0-6)
+settings.field.categories              boolean     Set visibility for Top-News in the from                           1
+-------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
+settings.required.title                boolean     Set Title required                                                1
+settings.required.teaser               boolean     Set Teaser required
+settings.required.bodytext             boolean     Set Bodytext required
+settings.required.datetime             boolean     Set Datetime required                                             1
+settings.required.archive              boolean     Set Archive-Datetime required
+settings.required.image                integer     Set count of Image required
+settings.required.imagealt             integer     Set count of Image-Alternative required
+settings.required.imagedesc            integer     Set count of Image-Description required
+settings.required.relatedfile          integer     Set count of Related-Files required
+settings.required.categories           boolean     Set fields required
+-------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
+settings.value.showinpreview           integer     Sets default value of "Show in preview"
+-------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
+settings.options.useHtmlTeaser         boolean     Set Teaser as HTML in form
+settings.options.useHtml               boolean     Set Bodytext as HTML in form
+-------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
+settings.list.orderField               string      Order-field for news-list                                         uid
+settings.list.orderDirection           string      Order-direction for news-list                                     desc
+=====================================  ==========  ================================================================  =======================================
 
 [tsref:plugin.tx_newt4news]
 

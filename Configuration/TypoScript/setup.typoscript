@@ -30,6 +30,7 @@ plugin.tx_newt4news {
       showinpreview = {$plugin.tx_newt4news.settings.value.showinpreview}
     }
     options {
+      useHtmlTeaser = {$plugin.tx_newt4news.settings.options.useHtmlTeaser}
       useHtml = {$plugin.tx_newt4news.settings.options.useHtml}
     }
     list {

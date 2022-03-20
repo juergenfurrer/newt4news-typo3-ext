@@ -38,6 +38,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class NewsEndpoint implements EndpointInterface
 {
     private array $settings;
+    private int $maxImageCount = 6;
+    private int $maxFileCount = 6;
 
     private NewsRepository $newsRepository;
     private PersistenceManager $persistenceManager;
@@ -114,35 +116,48 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
-        if (boolval($this->getSetting('image', 'field')) && isset($params["image"])) {
-            if ($params["image"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                /** @var \Infonique\Newt\Domain\Model\FileReference */
-                $imageRef = $params["image"];
-                /** @var \GeorgRinger\News\Domain\Model\FileReference */
-                $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
-                $fileReference->setFileUid($imageRef->getUidLocal());
-                if (boolval($this->getSetting('showinpreview', 'field')) && isset($params["showinpreview"])) {
-                    $fileReference->setShowinpreview(intval($params["showinpreview"]));
-                }
-                if (boolval($this->getSetting('imagealt', 'field')) && isset($params["imagealt"])) {
-                    $fileReference->setAlternative($params["imagealt"]);
-                }
-                if (boolval($this->getSetting('imagedesc', 'field')) && isset($params["imagedesc"])) {
-                    $fileReference->setDescription($params["imagedesc"]);
-                }
+        $imgCount = min($this->maxImageCount, intval($this->getSetting('image', 'field')));
+        if ($imgCount > 0) {
+            for ($i = 0; $i < $imgCount; $i++) {
+                $imgNum = $i > 0 ? $i : "";
+                $paramImage = "image{$imgNum}";
+                $paramShowinpreview = "showinpreview{$imgNum}";
+                $paramImagealt = "imagealt{$imgNum}";
+                $paramImagedesc = "imagedesc{$imgNum}";
+                if (isset($params[$paramImage]) && $params[$paramImage] instanceof \Infonique\Newt\Domain\Model\FileReference) {
+                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                    $imageRef = $params[$paramImage];
+                    /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                    $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
+                    $fileReference->setFileUid($imageRef->getUidLocal());
+                    if (intval($this->getSetting('showinpreview', 'field')) > $i && isset($params[$paramShowinpreview])) {
+                        $fileReference->setShowinpreview(intval($params[$paramShowinpreview]));
+                    }
+                    if (intval($this->getSetting('imagealt', 'field')) > $i && isset($params[$paramImagealt])) {
+                        $fileReference->setAlternative($params[$paramImagealt]);
+                    }
+                    if (intval($this->getSetting('imagedesc', 'field')) > $i && isset($params[$paramImagedesc])) {
+                        $fileReference->setDescription($params[$paramImagedesc]);
+                    }
 
-                $news->addFalMedia($fileReference);
+                    $news->addFalMedia($fileReference);
+                }
             }
         }
 
-        if (boolval($this->getSetting('relatedfile', 'field')) && isset($params["relatedfile"])) {
-            if ($params["relatedfile"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                /** @var \Infonique\Newt\Domain\Model\FileReference */
-                $imageRef = $params["relatedfile"];
-                /** @var \GeorgRinger\News\Domain\Model\FileReference */
-                $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
-                $fileReference->setFileUid($imageRef->getUidLocal());
-                $news->addFalRelatedFile($fileReference);
+        $relatedfileCount = min($this->maxFileCount, intval($this->getSetting('relatedfile', 'field')));
+        if ($relatedfileCount > 0) {
+            for ($i = 0; $i < $relatedfileCount; $i++) {
+                $fileNum = $i > 0 ? $i : "";
+                $paramRelatedfile = "relatedfile{$fileNum}";
+                if (isset($params[$paramRelatedfile]) && $params[$paramRelatedfile] instanceof \Infonique\Newt\Domain\Model\FileReference) {
+                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                    $imageRef = $params[$paramRelatedfile];
+                    /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                    $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
+                    $fileReference->setFileUid($imageRef->getUidLocal());
+                    $news->addFalRelatedFile($fileReference);
+                }
             }
         }
 
@@ -207,7 +222,6 @@ class NewsEndpoint implements EndpointInterface
         /** @var News */
         $news = $this->newsRepository->findByUid(intval($id));
         if ($news) {
-
             if (boolval($this->getSetting('istopnews', 'field'))) {
                 $item->addValue(new ItemValue("istopnews", $news->getIstopnews()));
             }
@@ -238,72 +252,91 @@ class NewsEndpoint implements EndpointInterface
                 }
             }
 
-            if (boolval($this->getSetting('image', 'field'))) {
-                $falMedia = null;
-                if ($news->getFalMedia()) {
-                    foreach ($news->getFalMedia() as $mediaItem) {
-                        if (!$falMedia) {
-                            /** @var FileReference */
-                            $falMedia = $mediaItem;
+            $imgCount = min($this->maxImageCount, intval($this->getSetting('image', 'field')));
+            if ($imgCount > 0) {
+                for ($i = 0; $i < $imgCount; $i++) {
+                    $imgNum = $i > 0 ? $i : "";
+                    $paramImage = "image{$imgNum}";
+                    $paramImageUid = "image{$imgNum}Uid";
+                    $paramShowinpreview = "showinpreview{$imgNum}";
+                    $paramImagealt = "imagealt{$imgNum}";
+                    $paramImagedesc = "imagedesc{$imgNum}";
+                    $falMedia = null;
+                    if ($news->getFalMedia()) {
+                        $k = 0;
+                        foreach ($news->getFalMedia() as $mediaItem) {
+                            if (!$falMedia && $k == $i) {
+                                /** @var FileReference */
+                                $falMedia = $mediaItem;
+                            }
+                            $k++;
                         }
                     }
-                }
-                if ($falMedia) {
-                    $storageId = $falMedia->getOriginalResource()->getProperty('storage');
-                    $identifier = $falMedia->getOriginalResource()->getProperty('identifier');
-                    /** @var StorageRepository */
-                    $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                    if ($storageRepository) {
-                        /** @var ResourceStorage */
-                        $storage = $storageRepository->findByUid($storageId);
-                        $file = $storage->getFile($identifier);
-                        if ($file) {
-                            $fileContent = $file->getContents();
-                            $item->addValue(new ItemValue("imageUid", strval($falMedia->getUid())));
-                            $item->addValue(new ItemValue("image", base64_encode($fileContent)));
+                    if ($falMedia) {
+                        $storageId = $falMedia->getOriginalResource()->getProperty('storage');
+                        $identifier = $falMedia->getOriginalResource()->getProperty('identifier');
+                        /** @var StorageRepository */
+                        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+                        if ($storageRepository) {
+                            /** @var ResourceStorage */
+                            $storage = $storageRepository->findByUid($storageId);
+                            $file = $storage->getFile($identifier);
+                            if ($file) {
+                                $fileContent = $file->getContents();
+                                $item->addValue(new ItemValue($paramImageUid, strval($falMedia->getUid())));
+                                $item->addValue(new ItemValue($paramImage, base64_encode($fileContent)));
+                            }
                         }
-                    }
 
-                    if (boolval($this->getSetting('showinpreview', 'field'))) {
-                        $showinpreview = $falMedia->getOriginalResource()->getProperty('showinpreview');
-                        $item->addValue(new ItemValue("showinpreview", $showinpreview));
-                    }
+                        if (intval($this->getSetting('showinpreview', 'field')) > $i) {
+                            $showinpreview = $falMedia->getOriginalResource()->getProperty('showinpreview');
+                            $item->addValue(new ItemValue($paramShowinpreview, $showinpreview));
+                        }
 
-                    if (boolval($this->getSetting('imagealt', 'field'))) {
-                        $alternative = $falMedia->getOriginalResource()->getProperty('alternative');
-                        $item->addValue(new ItemValue("imagealt", $alternative));
-                    }
+                        if (intval($this->getSetting('imagealt', 'field')) > $i) {
+                            $alternative = $falMedia->getOriginalResource()->getProperty('alternative');
+                            $item->addValue(new ItemValue($paramImagealt, $alternative));
+                        }
 
-                    if (boolval($this->getSetting('imagedesc', 'field'))) {
-                        $description = $falMedia->getOriginalResource()->getProperty('description');
-                        $item->addValue(new ItemValue("imagedesc", $description));
+                        if (intval($this->getSetting('imagedesc', 'field')) > $i) {
+                            $description = $falMedia->getOriginalResource()->getProperty('description');
+                            $item->addValue(new ItemValue($paramImagedesc, $description));
+                        }
                     }
                 }
             }
 
-            if (boolval($this->getSetting('relatedfile', 'field'))) {
-                $falRelatedFiles = null;
-                if ($news->getFalRelatedFiles()) {
-                    foreach ($news->getFalRelatedFiles() as $relatedFiles) {
-                        if (!$falRelatedFiles) {
-                            /** @var FileReference */
-                            $falRelatedFiles = $relatedFiles;
+            $relatedfileCount = min($this->maxFileCount, intval($this->getSetting('relatedfile', 'field')));
+            if ($relatedfileCount > 0) {
+                for ($i = 0; $i < $relatedfileCount; $i++) {
+                    $fileNum = $i > 0 ? $i : "";
+                    $paramRelatedfile = "relatedfile{$fileNum}";
+                    $paramRelatedfileUid = "relatedfile{$fileNum}Uid";
+                    $falRelatedFiles = null;
+                    if ($news->getFalRelatedFiles()) {
+                        $k = 0;
+                        foreach ($news->getFalRelatedFiles() as $relatedFiles) {
+                            if (!$falRelatedFiles && $k == $i) {
+                                /** @var FileReference */
+                                $falRelatedFiles = $relatedFiles;
+                            }
+                            $k++;
                         }
                     }
-                }
-                if ($falRelatedFiles) {
-                    $storageId = $falRelatedFiles->getOriginalResource()->getProperty('storage');
-                    $identifier = $falRelatedFiles->getOriginalResource()->getProperty('identifier');
-                    /** @var StorageRepository */
-                    $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-                    if ($storageRepository) {
-                        /** @var ResourceStorage */
-                        $storage = $storageRepository->findByUid($storageId);
-                        $file = $storage->getFile($identifier);
-                        if ($file) {
-                            $fileContent = $file->getContents();
-                            $item->addValue(new ItemValue("relatedfileUid", strval($falRelatedFiles->getUid())));
-                            $item->addValue(new ItemValue("relatedfile", base64_encode($fileContent)));
+                    if ($falRelatedFiles) {
+                        $storageId = $falRelatedFiles->getOriginalResource()->getProperty('storage');
+                        $identifier = $falRelatedFiles->getOriginalResource()->getProperty('identifier');
+                        /** @var StorageRepository */
+                        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+                        if ($storageRepository) {
+                            /** @var ResourceStorage */
+                            $storage = $storageRepository->findByUid($storageId);
+                            $file = $storage->getFile($identifier);
+                            if ($file) {
+                                $fileContent = $file->getContents();
+                                $item->addValue(new ItemValue($paramRelatedfileUid, strval($falRelatedFiles->getUid())));
+                                $item->addValue(new ItemValue($paramRelatedfile, base64_encode($fileContent)));
+                            }
                         }
                     }
                 }
@@ -389,70 +422,85 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
-        if (boolval($this->getSetting('image', 'field'))) {
+        $imgCount = min($this->maxImageCount, intval($this->getSetting('image', 'field')));
+        if ($imgCount > 0) {
             $falMedias = $news->getFalMedia();
-            /** @var \GeorgRinger\News\Domain\Model\FileReference */
-            $usedMedia = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
-            $isNew = true;
-            if (isset($params["imageUid"]) && intval($params["imageUid"]) > 0) {
-                foreach ($falMedias as $falMedia) {
-                    if ($falMedia->getUid() == intval($params["imageUid"])) {
-                        /** @var \GeorgRinger\News\Domain\Model\FileReference */
-                        $usedMedia = $falMedia;
-                        $isNew = false;
-                        continue;
+            for ($i = 0; $i < $imgCount; $i++) {
+                $imgNum = $i > 0 ? $i : "";
+                $paramImage = "image{$imgNum}";
+                $paramImageUid = "image{$imgNum}Uid";
+                $paramShowinpreview = "showinpreview{$imgNum}";
+                $paramImagealt = "imagealt{$imgNum}";
+                $paramImagedesc = "imagedesc{$imgNum}";
+                /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                $usedMedia = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
+                $isNew = true;
+                if (isset($params[$paramImageUid]) && intval($params[$paramImageUid]) > 0) {
+                    foreach ($falMedias as $falMedia) {
+                        if ($falMedia->getUid() == intval($params[$paramImageUid])) {
+                            /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                            $usedMedia = $falMedia;
+                            $isNew = false;
+                            continue;
+                        }
                     }
                 }
-            }
-            if (isset($params["image"]) && $params["image"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                /** @var \Infonique\Newt\Domain\Model\FileReference */
-                $imageRef = $params["image"];
+                if (isset($params[$paramImage]) && $params[$paramImage] instanceof \Infonique\Newt\Domain\Model\FileReference) {
+                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                    $imageRef = $params[$paramImage];
 
-                $usedMedia->setFileUid($imageRef->getUidLocal());
-                if (boolval($this->getSetting('showinpreview', 'field')) && isset($params["showinpreview"])) {
-                    $usedMedia->setShowinpreview(intval($params["showinpreview"]));
-                }
-                if (boolval($this->getSetting('imagealt', 'field')) && isset($params["imagealt"])) {
-                    $usedMedia->setAlternative($params["imagealt"]);
-                }
-                if (boolval($this->getSetting('imagedesc', 'field')) && isset($params["imagedesc"])) {
-                    $usedMedia->setDescription($params["imagedesc"]);
-                }
+                    $usedMedia->setFileUid($imageRef->getUidLocal());
+                    if (intval($this->getSetting('showinpreview', 'field')) > $i && isset($params[$paramShowinpreview])) {
+                        $usedMedia->setShowinpreview(intval($params[$paramShowinpreview]));
+                    }
+                    if (intval($this->getSetting('imagealt', 'field')) > $i && isset($params[$paramImagealt])) {
+                        $usedMedia->setAlternative($params[$paramImagealt]);
+                    }
+                    if (intval($this->getSetting('imagedesc', 'field')) > $i && isset($params[$paramImagedesc])) {
+                        $usedMedia->setDescription($params[$paramImagedesc]);
+                    }
 
-                if ($isNew) {
-                    $news->addFalMedia($usedMedia);
+                    if ($isNew) {
+                        $news->addFalMedia($usedMedia);
+                    }
+                } else if (isset($params[$paramImageUid]) && intval($params[$paramImageUid]) > 0 && !$isNew) {
+                    // Remove image
+                    $falMedias->detach($usedMedia);
                 }
-            } else if (isset($params["imageUid"]) && intval($params["imageUid"]) > 0 && ! $isNew) {
-                // Remove image
-                $falMedias->detach($usedMedia);
             }
         }
 
-        if (boolval($this->getSetting('relatedfile', 'field'))) {
+        $relatedfileCount = min($this->maxFileCount, intval($this->getSetting('relatedfile', 'field')));
+        if ($relatedfileCount > 0) {
             $falFiles = $news->getFalRelatedFiles();
-            /** @var \GeorgRinger\News\Domain\Model\FileReference */
-            $usedFile = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
-            $isNew = true;
-            if (isset($params["relatedfileUid"]) && intval($params["relatedfileUid"]) > 0) {
-                foreach ($falFiles as $falFile) {
-                    if ($falFile->getUid() == intval($params["relatedfileUid"])) {
-                        /** @var \GeorgRinger\News\Domain\Model\FileReference */
-                        $usedFile = $falFile;
-                        $isNew = false;
-                        continue;
+            for ($i = 0; $i < $relatedfileCount; $i++) {
+                $fileNum = $i > 0 ? $i : "";
+                $paramRelatedfile = "relatedfile{$fileNum}";
+                $paramRelatedfileUid = "relatedfile{$fileNum}Uid";
+                /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                $usedFile = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
+                $isNew = true;
+                if (isset($params[$paramRelatedfileUid]) && intval($params[$paramRelatedfileUid]) > 0) {
+                    foreach ($falFiles as $falFile) {
+                        if ($falFile->getUid() == intval($params[$paramRelatedfileUid])) {
+                            /** @var \GeorgRinger\News\Domain\Model\FileReference */
+                            $usedFile = $falFile;
+                            $isNew = false;
+                            continue;
+                        }
                     }
                 }
-            }
-            if (isset($params["relatedfile"]) && $params["relatedfile"] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                /** @var \Infonique\Newt\Domain\Model\FileReference */
-                $fileRef = $params["relatedfile"];
-                $usedFile->setFileUid($fileRef->getUidLocal());
-                if ($isNew) {
-                    $news->addFalRelatedFile($usedFile);
+                if (isset($params[$paramRelatedfile]) && $params[$paramRelatedfile] instanceof \Infonique\Newt\Domain\Model\FileReference) {
+                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                    $fileRef = $params[$paramRelatedfile];
+                    $usedFile->setFileUid($fileRef->getUidLocal());
+                    if ($isNew) {
+                        $news->addFalRelatedFile($usedFile);
+                    }
+                } else if (isset($params[$paramRelatedfileUid]) && intval($params[$paramRelatedfileUid]) > 0 && !$isNew) {
+                    // Remove File
+                    $falFiles->detach($usedFile);
                 }
-            } else if (isset($params["relatedfileUid"]) && intval($params["relatedfileUid"]) > 0 && ! $isNew) {
-                // Remove File
-                $falFiles->detach($usedFile);
             }
         }
 
@@ -557,8 +605,8 @@ class NewsEndpoint implements EndpointInterface
             if ($useItems) {
                 $item = new Item();
                 $item->setId(strval($newsItem->getUid()));
-                $item->setTitle(strval($newsItem->getTitle()));
-                $item->setDescription(strval($newsItem->getTeaser()));
+                $item->setTitle(trim($newsItem->getTitle()));
+                $item->setDescription(trim(strip_tags($newsItem->getTeaser())));
                 $items[] = $item;
             }
             if ($startUid == 0 || $newsItem->getUid() == $startUid) {
@@ -626,7 +674,11 @@ class NewsEndpoint implements EndpointInterface
             $teaser = new Field();
             $teaser->setName("teaser");
             $teaser->setLabel($label);
-            $teaser->setType(FieldType::TEXTAREA);
+            if (boolval($this->getSetting('useHtmlTeaser', 'options'))) {
+                $teaser->setType(FieldType::HTML);
+            } else {
+                $teaser->setType(FieldType::TEXTAREA);
+            }
             if (boolval($this->getSetting('teaser', 'required'))) {
                 $teaser->setValidation($required);
             }
@@ -673,88 +725,101 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $archive;
         }
 
-        if (boolval($this->getSetting('image', 'field'))) {
+        $imgCount = min($this->maxImageCount, intval($this->getSetting('image', 'field')));
+        if ($imgCount > 0) {
             $divider = new Field();
             $divider->setType(FieldType::DIVIDER);
 
-            if (count($ret) > 0) {
-                // Add the divider
-                $ret[] = $divider;
-            }
-
-            $imageUid = new Field();
-            $imageUid->setName("imageUid");
-            $imageUid->setType(FieldType::HIDDEN);
-            $ret[] = $imageUid;
-
-            $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_media');
-            $image = new Field();
-            $image->setName("image");
-            $image->setLabel($label);
-            $image->setType(FieldType::IMAGE);
-            if (boolval($this->getSetting('image', 'required'))) {
-                $image->setValidation($required);
-            }
-            $ret[] = $image;
-
-            if (boolval($this->getSetting('showinpreview', 'field'))) {
-                $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews');
-                $showinpreview = new Field();
-                $showinpreview->setName("showinpreview");
-                $showinpreview->setLabel($label);
-                $showinpreview->setType(FieldType::SELECT);
-                $showinpreview->addItem(new FieldItem(0, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.0')));
-                $showinpreview->addItem(new FieldItem(1, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.1')));
-                $showinpreview->addItem(new FieldItem(2, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.2')));
-                $default = $this->getSetting('showinpreview', 'value');
-                $showinpreview->setValue($default);
-                $ret[] = $showinpreview;
-            }
-
-            if (boolval($this->getSetting('imagealt', 'field'))) {
-                $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative');
-                $imagealt = new Field();
-                $imagealt->setName("imagealt");
-                $imagealt->setLabel($label);
-                $imagealt->setType(FieldType::TEXT);
-                if (boolval($this->getSetting('imagealt', 'required'))) {
-                    $imagealt->setValidation($required);
+            $imgReq = intval($this->getSetting('image', 'required'));
+            for ($i = 0; $i < $imgCount; $i++) {
+                if (count($ret) > 0) {
+                    // Add the divider
+                    $ret[] = $divider;
                 }
-                $ret[] = $imagealt;
-            }
 
-            if (boolval($this->getSetting('imagedesc', 'field'))) {
-                $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.description');
-                $imagedesc = new Field();
-                $imagedesc->setName("imagedesc");
-                $imagedesc->setLabel($label);
-                $imagedesc->setType(FieldType::TEXTAREA);
-                if (boolval($this->getSetting('imagedesc', 'required'))) {
-                    $imagedesc->setValidation($required);
+                $imgNum = $i > 0 ? $i : "";
+                $paramImage = "image{$imgNum}";
+                $paramImageUid = "image{$imgNum}Uid";
+                $imageUid = new Field();
+                $imageUid->setName($paramImageUid);
+                $imageUid->setType(FieldType::HIDDEN);
+                $ret[] = $imageUid;
+
+                $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_media');
+                $image = new Field();
+                $image->setName($paramImage);
+                $image->setLabel($label);
+                $image->setType(FieldType::IMAGE);
+                if ($imgReq > $i) {
+                    $image->setValidation($required);
                 }
-                $ret[] = $imagedesc;
-            }
+                $ret[] = $image;
 
+                $showinpreviewCount = intval($this->getSetting('showinpreview', 'field'));
+                if ($showinpreviewCount > $i) {
+                    $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews');
+                    $showinpreview = new Field();
+                    $showinpreview->setName("showinpreview{$imgNum}");
+                    $showinpreview->setLabel($label);
+                    $showinpreview->setType(FieldType::SELECT);
+                    $showinpreview->addItem(new FieldItem(0, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.0')));
+                    $showinpreview->addItem(new FieldItem(1, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.1')));
+                    $showinpreview->addItem(new FieldItem(2, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.2')));
+                    $default = $this->getSetting('showinpreview', 'value');
+                    $showinpreview->setValue($default);
+                    $ret[] = $showinpreview;
+                }
+
+                $imagealtCount = intval($this->getSetting('imagealt', 'field'));
+                if ($imagealtCount > $i) {
+                    $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative');
+                    $imagealt = new Field();
+                    $imagealt->setName("imagealt{$imgNum}");
+                    $imagealt->setLabel($label);
+                    $imagealt->setType(FieldType::TEXT);
+                    if (intval($this->getSetting('imagealt', 'required')) > $i) {
+                        $imagealt->setValidation($required);
+                    }
+                    $ret[] = $imagealt;
+                }
+
+                $imagedescCount = intval($this->getSetting('imagedesc', 'field'));
+                if ($imagedescCount > $i) {
+                    $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.description');
+                    $imagedesc = new Field();
+                    $imagedesc->setName("imagedesc{$imgNum}");
+                    $imagedesc->setLabel($label);
+                    $imagedesc->setType(FieldType::TEXTAREA);
+                    if (intval($this->getSetting('imagedesc', 'required')) > $i) {
+                        $imagedesc->setValidation($required);
+                    }
+                    $ret[] = $imagedesc;
+                }
+            }
             // Add the divider
             $ret[] = $divider;
         }
 
+        $relatedfileCount = min($this->maxFileCount, intval($this->getSetting('relatedfile', 'field')));
+        if ($relatedfileCount > 0) {
+            for ($i = 0; $i < $relatedfileCount; $i++) {
+                $imgNum = $i > 0 ? $i : "";
 
-        if (boolval($this->getSetting('relatedfile', 'field'))) {
-            $relatedfileUid = new Field();
-            $relatedfileUid->setName("relatedfileUid");
-            $relatedfileUid->setType(FieldType::HIDDEN);
-            $ret[] = $relatedfileUid;
+                $relatedfileUid = new Field();
+                $relatedfileUid->setName("relatedfile{$imgNum}Uid");
+                $relatedfileUid->setType(FieldType::HIDDEN);
+                $ret[] = $relatedfileUid;
 
-            $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_related_files');
-            $relatedfile = new Field();
-            $relatedfile->setName("relatedfile");
-            $relatedfile->setLabel($label);
-            $relatedfile->setType(FieldType::FILE);
-            if (boolval($this->getSetting('relatedfile', 'required'))) {
-                $relatedfile->setValidation($required);
+                $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_related_files');
+                $relatedfile = new Field();
+                $relatedfile->setName("relatedfile{$imgNum}");
+                $relatedfile->setLabel($label);
+                $relatedfile->setType(FieldType::FILE);
+                if (intval($this->getSetting('relatedfile', 'required')) > $i) {
+                    $relatedfile->setValidation($required);
+                }
+                $ret[] = $relatedfile;
             }
-            $ret[] = $relatedfile;
         }
 
         if (boolval($this->getSetting('categories', 'field'))) {

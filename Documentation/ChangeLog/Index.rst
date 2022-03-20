@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 1.8.0
+-------------
+Add multiple images/files
+
 Version 1.7.1
 -------------
 Use HTML-field / Fix file-update

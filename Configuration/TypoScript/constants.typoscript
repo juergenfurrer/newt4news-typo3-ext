@@ -20,15 +20,15 @@ plugin.tx_newt4news {
       datetime = 1
       # cat=plugin.tx_newt4news/newt4news_fields/060; type=boolean; label=Show Archive
       archive = 1
-      # cat=plugin.tx_newt4news/newt4news_fields/070; type=boolean; label=Show Image
+      # cat=plugin.tx_newt4news/newt4news_fields/070; type=options[0,1,2,3,4,5,6]; label=Image count
       image = 1
-      # cat=plugin.tx_newt4news/newt4news_fields/080; type=boolean; label=Show Image in view
+      # cat=plugin.tx_newt4news/newt4news_fields/080; type=options[0,1,2,3,4,5,6]; label=Image in view count
       showinpreview = 1
-      # cat=plugin.tx_newt4news/newt4news_fields/090; type=boolean; label=Show Imagealt
+      # cat=plugin.tx_newt4news/newt4news_fields/090; type=options[0,1,2,3,4,5,6]; label=Imagealt count
       imagealt = 1
-      # cat=plugin.tx_newt4news/newt4news_fields/100; type=boolean; label=Show Imagedesc
+      # cat=plugin.tx_newt4news/newt4news_fields/100; type=options[0,1,2,3,4,5,6]; label=Imagedesc count
       imagedesc = 1
-      # cat=plugin.tx_newt4news/newt4news_fields/110; type=boolean; label=Show Relatedfile
+      # cat=plugin.tx_newt4news/newt4news_fields/110; type=options[0,1,2,3,4,5,6]; label=Show Relatedfile
       relatedfile = 1
       # cat=plugin.tx_newt4news/newt4news_fields/120; type=boolean; label=Show Categories
       categories = 1
@@ -44,13 +44,13 @@ plugin.tx_newt4news {
       datetime = 1
       # cat=plugin.tx_newt4news/newt4news_required/050; type=boolean; label=Archive required
       archive =
-      # cat=plugin.tx_newt4news/newt4news_required/060; type=boolean; label=Image required
+      # cat=plugin.tx_newt4news/newt4news_required/060; type=options[0,1,2,3,4,5,6]; label=Images required
       image =
-      # cat=plugin.tx_newt4news/newt4news_required/070; type=boolean; label=Imagealt required
+      # cat=plugin.tx_newt4news/newt4news_required/070; type=options[0,1,2,3,4,5,6]; label=Imagealt required
       imagealt =
-      # cat=plugin.tx_newt4news/newt4news_required/080; type=boolean; label=Imagedesc required
+      # cat=plugin.tx_newt4news/newt4news_required/080; type=options[0,1,2,3,4,5,6]; label=Imagedesc required
       imagedesc =
-      # cat=plugin.tx_newt4news/newt4news_required/090; type=boolean; label=Relatedfile required
+      # cat=plugin.tx_newt4news/newt4news_required/090; type=options[0,1,2,3,4,5,6]; label=Relatedfile required
       relatedfile =
       # cat=plugin.tx_newt4news/newt4news_required/100; type=boolean; label=Categories required
       categories =
@@ -60,6 +60,8 @@ plugin.tx_newt4news {
       showinpreview =
     }
     options {
+      # cat=plugin.tx_newt4news/newt4news_options/020; type=boolean; label=Activate HTML for teaser
+      useHtmlTeaser =
       # cat=plugin.tx_newt4news/newt4news_options/010; type=boolean; label=Activate HTML for bodytext
       useHtml =
     }
