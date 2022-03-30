@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 1.8.1
+-------------
+Use of EXT_news settings
+
 Version 1.8.0
 -------------
 Add multiple images/files

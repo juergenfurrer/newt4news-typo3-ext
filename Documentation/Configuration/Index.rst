@@ -30,6 +30,7 @@ settings.required.title                boolean     Set Title required           
 settings.required.teaser               boolean     Set Teaser required
 settings.required.bodytext             boolean     Set Bodytext required
 settings.required.datetime             boolean     Set Datetime required                                             1
+                                                   (If dateTimeNotRequired is set this setting is not used)
 settings.required.archive              boolean     Set Archive-Datetime required
 settings.required.image                integer     Set count of Image required
 settings.required.imagealt             integer     Set count of Image-Alternative required
@@ -38,9 +39,6 @@ settings.required.relatedfile          integer     Set count of Related-Files re
 settings.required.categories           boolean     Set fields required
 -------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
 settings.value.showinpreview           integer     Sets default value of "Show in preview"
--------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
-settings.options.useHtmlTeaser         boolean     Set Teaser as HTML in form
-settings.options.useHtml               boolean     Set Bodytext as HTML in form
 -------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
 settings.list.orderField               string      Order-field for news-list                                         uid
 settings.list.orderDirection           string      Order-direction for news-list                                     desc

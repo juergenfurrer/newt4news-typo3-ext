@@ -26,6 +26,7 @@ use Infonique\Newt\NewtApi\MethodReadModel;
 use Infonique\Newt\NewtApi\MethodType;
 use Infonique\Newt\NewtApi\MethodUpdateModel;
 use Infonique\Newt\Utility\SlugUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class NewsEndpoint implements EndpointInterface
 {
     private array $settings;
+    private array $settingsNews;
     private int $maxImageCount = 6;
     private int $maxFileCount = 6;
 
@@ -53,6 +55,14 @@ class NewsEndpoint implements EndpointInterface
 
         $conf = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $this->settings = $conf['plugin.']['tx_newt4news.']['settings.'] ?? [];
+
+        try {
+            /** @var ExtensionConfiguration */
+            $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+            $this->settingsNews = $extensionConfiguration->get('news');
+        } catch (\Exception $exception) {
+            // do nothing
+        }
     }
 
     /**
@@ -674,7 +684,7 @@ class NewsEndpoint implements EndpointInterface
             $teaser = new Field();
             $teaser->setName("teaser");
             $teaser->setLabel($label);
-            if (boolval($this->getSetting('useHtmlTeaser', 'options'))) {
+            if (boolval($this->getNewsSetting("rteForTeaser"))) {
                 $teaser->setType(FieldType::HTML);
             } else {
                 $teaser->setType(FieldType::TEXTAREA);
@@ -690,11 +700,7 @@ class NewsEndpoint implements EndpointInterface
             $bodytext = new Field();
             $bodytext->setName("bodytext");
             $bodytext->setLabel($label);
-            if (boolval($this->getSetting('useHtml', 'options'))) {
-                $bodytext->setType(FieldType::HTML);
-            } else {
-                $bodytext->setType(FieldType::TEXTAREA);
-            }
+            $bodytext->setType(FieldType::HTML);
             if (boolval($this->getSetting('bodytext', 'required'))) {
                 $bodytext->setValidation($required);
             }
@@ -707,7 +713,8 @@ class NewsEndpoint implements EndpointInterface
             $datetime->setName("datetime");
             $datetime->setLabel($label);
             $datetime->setType(FieldType::DATETIME);
-            if (boolval($this->getSetting('datetime', 'required'))) {
+            $notRequiredOverride = boolval($this->getNewsSetting("dateTimeNotRequired"));
+            if (boolval($this->getSetting('datetime', 'required')) && ! $notRequiredOverride) {
                 $datetime->setValidation($required);
             }
             $ret[] = $datetime;
@@ -718,7 +725,11 @@ class NewsEndpoint implements EndpointInterface
             $archive = new Field();
             $archive->setName("archive");
             $archive->setLabel($label);
-            $archive->setType(FieldType::DATE);
+            if ($this->getNewsSetting("archiveDate") == "datetime") {
+                $archive->setType(FieldType::DATETIME);
+            } else {
+                $archive->setType(FieldType::DATE);
+            }
             if (boolval($this->getSetting('archive', 'required'))) {
                 $archive->setValidation($required);
             }
@@ -850,6 +861,17 @@ class NewsEndpoint implements EndpointInterface
     {
         if ($this->settings && isset($this->settings[$type . "."]) && isset($this->settings[$type . "."][$key])) {
             return $this->settings[$type . "."][$key];
+        }
+        return '';
+    }
+
+    /**
+     * Return the settings of EXT:news
+     */
+    private function getNewsSetting(string $key)
+    {
+        if ($this->settings && isset($this->settingsNews[$key])) {
+            return $this->settingsNews[$key];
         }
         return '';
     }

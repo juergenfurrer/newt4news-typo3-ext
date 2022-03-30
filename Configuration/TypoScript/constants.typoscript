@@ -3,7 +3,6 @@
 # customsubcategory=newt4news_required=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_required
 # customsubcategory=newt4news_value=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_value
 # customsubcategory=newt4news_list=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_list
-# customsubcategory=newt4news_options=LLL:EXT:newt4news/Resources/Private/Language/locallang_db.xlf:configuration_customSubCategories_options
 
 plugin.tx_newt4news {
   settings {
@@ -58,12 +57,6 @@ plugin.tx_newt4news {
     value {
       # cat=plugin.tx_newt4news/newt4news_value/010; type=options[Empty=,Show only in detail views=0, Show in all views=1, Show only in list views=2]; label=Show in Preview value
       showinpreview =
-    }
-    options {
-      # cat=plugin.tx_newt4news/newt4news_options/020; type=boolean; label=Activate HTML for teaser
-      useHtmlTeaser =
-      # cat=plugin.tx_newt4news/newt4news_options/010; type=boolean; label=Activate HTML for bodytext
-      useHtml =
     }
     list {
       # cat=plugin.tx_newt4news/newt4news_list/010; type=string; label=Order field for news-list (valid field from news)

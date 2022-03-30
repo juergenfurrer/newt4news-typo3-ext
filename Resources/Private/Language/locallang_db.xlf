@@ -15,9 +15,6 @@
 			<trans-unit id="configuration_customSubCategories_list" resname="configuration_customSubCategories_list">
 				<source>List settings</source>
 			</trans-unit>
-			<trans-unit id="configuration_customSubCategories_options" resname="configuration_customSubCategories_options">
-				<source>Options</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
