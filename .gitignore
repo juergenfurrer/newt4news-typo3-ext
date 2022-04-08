@@ -22,6 +22,8 @@
 # Ignore temp directory.
 /typo3temp/
 
+/vendor/
+
 # Windows
 Thumbs.db
 desktop.ini
@@ -31,3 +33,6 @@ desktop.ini
 .Spotlight-V100
 .Trashes
 ._*
+
+# VSCode
+/.vscode/
