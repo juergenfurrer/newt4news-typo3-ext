@@ -2,6 +2,12 @@
     "name": "infonique/newt4news",
     "type": "typo3-cms-extension",
     "description": "Extension with the Newt-Provider for News",
+    "homepage": "https://extensions.typo3.org/extension/newt4news",
+    "support": {
+        "docs": "https://docs.typo3.org/p/infonique/newt4news/main/en-us/",
+        "issues": "https://github.com/juergenfurrer/newt4news-typo3-ext/issues",
+        "source": "https://github.com/juergenfurrer/newt4news-typo3-ext"
+    },
     "authors": [
         {
             "name": "Juergen Furrer",

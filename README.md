@@ -1,3 +1,9 @@
+[![Latest Stable Version](https://poser.pugx.org/infonique/newt4news/v/stable.svg)](https://extensions.typo3.org/extension/newt4news/)
+[![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg?style=flat-square)](https://get.typo3.org/version/11)
+[![TYPO3 10](https://img.shields.io/badge/TYPO3-10-orange.svg?style=flat-square)](https://get.typo3.org/version/10)
+[![Total Downloads](https://poser.pugx.org/infonique/newt4news/d/total)](https://packagist.org/packages/infonique/newt4news)
+[![Monthly Downloads](https://poser.pugx.org/infonique/newt4news/d/monthly)](https://packagist.org/packages/infonique/newt4news)
+
 # TYPO3 extension `newt4news`
 
 This TYPO3 extension adds the NEWT-Endpoint for the extension News and allows you to manage your
