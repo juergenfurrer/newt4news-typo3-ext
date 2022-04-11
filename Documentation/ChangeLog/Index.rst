@@ -6,9 +6,13 @@
 Change log
 ==========
 
+Version 2.0.0
+-------------
+Update to new API
+
 Version 1.8.1
 -------------
-Use of EXT_news settings
+Use of EXT:news settings
 
 Version 1.8.0
 -------------
