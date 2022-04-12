@@ -681,7 +681,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.istopnews');
             $istopnews = new Field();
             $istopnews->setName("istopnews");
-            $istopnews->setLabel($label);
+            $istopnews->setLabel($label ?? '');
             $istopnews->setType(FieldType::CHECKBOX);
             $ret[] = $istopnews;
         }
@@ -690,7 +690,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel');
             $title = new Field();
             $title->setName("title");
-            $title->setLabel($label);
+            $title->setLabel($label ?? '');
             $title->setType(FieldType::TEXT);
             if (boolval($this->getSetting('title', 'required'))) {
                 $title->setValidation($required);
@@ -702,7 +702,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.teaser');
             $teaser = new Field();
             $teaser->setName("teaser");
-            $teaser->setLabel($label);
+            $teaser->setLabel($label ?? '');
             if (boolval($this->getNewsSetting("rteForTeaser"))) {
                 $teaser->setType(FieldType::HTML);
             } else {
@@ -718,7 +718,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext_formlabel');
             $bodytext = new Field();
             $bodytext->setName("bodytext");
-            $bodytext->setLabel($label);
+            $bodytext->setLabel($label ?? '');
             $bodytext->setType(FieldType::HTML);
             if (boolval($this->getSetting('bodytext', 'required'))) {
                 $bodytext->setValidation($required);
@@ -730,7 +730,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.datetime');
             $datetime = new Field();
             $datetime->setName("datetime");
-            $datetime->setLabel($label);
+            $datetime->setLabel($label ?? '');
             $datetime->setType(FieldType::DATETIME);
             $notRequiredOverride = boolval($this->getNewsSetting("dateTimeNotRequired"));
             if (boolval($this->getSetting('datetime', 'required')) && ! $notRequiredOverride) {
@@ -743,7 +743,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.archive');
             $archive = new Field();
             $archive->setName("archive");
-            $archive->setLabel($label);
+            $archive->setLabel($label ?? '');
             if ($this->getNewsSetting("archiveDate") == "datetime") {
                 $archive->setType(FieldType::DATETIME);
             } else {
@@ -778,7 +778,7 @@ class NewsEndpoint implements EndpointInterface
                 $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_media');
                 $image = new Field();
                 $image->setName($paramImage);
-                $image->setLabel($label);
+                $image->setLabel($label ?? '');
                 $image->setType(FieldType::IMAGE);
                 if ($imgReq > $i) {
                     $image->setValidation($required);
@@ -790,7 +790,7 @@ class NewsEndpoint implements EndpointInterface
                     $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews');
                     $showinpreview = new Field();
                     $showinpreview->setName("showinpreview{$imgNum}");
-                    $showinpreview->setLabel($label);
+                    $showinpreview->setLabel($label ?? '');
                     $showinpreview->setType(FieldType::SELECT);
                     $showinpreview->addItem(new FieldItem(0, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.0')));
                     $showinpreview->addItem(new FieldItem(1, LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_media.showinviews.1')));
@@ -805,7 +805,7 @@ class NewsEndpoint implements EndpointInterface
                     $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative');
                     $imagealt = new Field();
                     $imagealt->setName("imagealt{$imgNum}");
-                    $imagealt->setLabel($label);
+                    $imagealt->setLabel($label ?? '');
                     $imagealt->setType(FieldType::TEXT);
                     if (intval($this->getSetting('imagealt', 'required')) > $i) {
                         $imagealt->setValidation($required);
@@ -818,7 +818,7 @@ class NewsEndpoint implements EndpointInterface
                     $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.description');
                     $imagedesc = new Field();
                     $imagedesc->setName("imagedesc{$imgNum}");
-                    $imagedesc->setLabel($label);
+                    $imagedesc->setLabel($label ?? '');
                     $imagedesc->setType(FieldType::TEXTAREA);
                     if (intval($this->getSetting('imagedesc', 'required')) > $i) {
                         $imagedesc->setValidation($required);
@@ -843,7 +843,7 @@ class NewsEndpoint implements EndpointInterface
                 $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.fal_related_files');
                 $relatedfile = new Field();
                 $relatedfile->setName("relatedfile{$imgNum}");
-                $relatedfile->setLabel($label);
+                $relatedfile->setLabel($label ?? '');
                 $relatedfile->setType(FieldType::FILE);
                 if (intval($this->getSetting('relatedfile', 'required')) > $i) {
                     $relatedfile->setValidation($required);
@@ -856,7 +856,7 @@ class NewsEndpoint implements EndpointInterface
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.categories');
             $categories = new Field();
             $categories->setName("categories");
-            $categories->setLabel($label);
+            $categories->setLabel($label ?? '');
             $categories->setType(FieldType::SELECT);
             /** @var Category $category */
             foreach ($this->categoryRepository->findAll() as $category) {
