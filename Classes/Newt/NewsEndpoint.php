@@ -13,7 +13,6 @@ use GeorgRinger\News\Domain\Model\News;
 use GeorgRinger\News\Domain\Repository\CategoryRepository;
 use GeorgRinger\News\Domain\Repository\NewsRepository;
 use Infonique\Newt\NewtApi\EndpointInterface;
-use Infonique\Newt\NewtApi\EndpointOptions;
 use Infonique\Newt\NewtApi\Field;
 use Infonique\Newt\NewtApi\FieldItem;
 use Infonique\Newt\NewtApi\FieldType;
@@ -64,24 +63,6 @@ class NewsEndpoint implements EndpointInterface
         } catch (\Exception $exception) {
             // do nothing
         }
-    }
-
-    /**
-     * Pass the EndpointOptions to the class
-     *
-     * @param EndpointOptions $endpointOptions
-     * @return void
-     */
-    public function setEndpointOptions(EndpointOptions $endpointOptions): void {}
-
-    /**
-     * Returns the hint for EndpointOptions
-     *
-     * @return string|null
-     */
-    public function getEndpointOptionsHint(): ?string
-    {
-        return null;
     }
 
     /**
