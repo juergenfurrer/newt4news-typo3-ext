@@ -16,7 +16,7 @@ Chose the Endpoint Class :code:`Infonique\Newt4News\Newt\NewsEndpoint` from the 
 
 If you fill in the Page UID, the records created with Newt will be stored on this page.
 
-Add at least the one Method
+Add at least one Method
 
 If you use CRUD and use image/file upload, please add the :code:`READ` method!
 
