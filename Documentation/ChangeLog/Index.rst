@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 2.1.0
+-------------
+Update to new Interface
+
 Version 2.0.0
 -------------
 Update to new API

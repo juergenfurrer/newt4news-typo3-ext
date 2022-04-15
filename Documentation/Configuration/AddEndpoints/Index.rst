@@ -8,7 +8,7 @@ Add the Endpoint
 
 To add the endpoint, switch into list-view, chose the storage-page (see plugin.tx_newt.persistence.storagePid)
 
-Click the plus-button, to add a new record and chose "Endpoint" under "Newt"
+Click the plus-button, to add a new record and chose :code:`Endpoint` under :code:`Newt`
 
 Enter the Name and the description, the Client will see this labels.
 
