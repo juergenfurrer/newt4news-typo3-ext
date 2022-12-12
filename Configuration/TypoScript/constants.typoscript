@@ -27,10 +27,16 @@ plugin.tx_newt4news {
       imagealt = 1
       # cat=plugin.tx_newt4news/newt4news_fields/100; type=options[0,1,2,3,4,5,6]; label=Imagedesc count
       imagedesc = 1
-      # cat=plugin.tx_newt4news/newt4news_fields/110; type=options[0,1,2,3,4,5,6]; label=Show Relatedfile
+      # cat=plugin.tx_newt4news/newt4news_fields/110; type=options[0,1,2,3,4,5,6]; label=Relatedfile count
       relatedfile = 1
       # cat=plugin.tx_newt4news/newt4news_fields/120; type=boolean; label=Show Categories
       categories = 1
+      # cat=plugin.tx_newt4news/newt4news_fields/130; type=boolean; label=Show Hide
+      hidden = 1
+      # cat=plugin.tx_newt4news/newt4news_fields/140; type=boolean; label=Show Publish Date
+      starttime =
+      # cat=plugin.tx_newt4news/newt4news_fields/150; type=boolean; label=Show Expiration Date
+      endtime =
     }
     required {
       # cat=plugin.tx_newt4news/newt4news_required/010; type=boolean; label=Title required
@@ -53,6 +59,10 @@ plugin.tx_newt4news {
       relatedfile =
       # cat=plugin.tx_newt4news/newt4news_required/100; type=boolean; label=Categories required
       categories =
+      # cat=plugin.tx_newt4news/newt4news_required/110; type=boolean; label=Publish Date required
+      starttime =
+      # cat=plugin.tx_newt4news/newt4news_required/120; type=boolean; label=Expiration Date required
+      endtime =
     }
     value {
       # cat=plugin.tx_newt4news/newt4news_value/010; type=options[Empty=,Show only in detail views=0, Show in all views=1, Show only in list views=2]; label=Show in Preview value

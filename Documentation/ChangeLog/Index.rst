@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 2.2.0
+-------------
+Add hide, start- and enddate
+
 Version 2.1.0
 -------------
 Update to new Interface

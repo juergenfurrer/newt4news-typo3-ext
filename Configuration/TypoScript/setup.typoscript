@@ -13,6 +13,9 @@ plugin.tx_newt4news {
       imagedesc = {$plugin.tx_newt4news.settings.field.imagedesc}
       relatedfile = {$plugin.tx_newt4news.settings.field.relatedfile}
       categories = {$plugin.tx_newt4news.settings.field.categories}
+      hidden = {$plugin.tx_newt4news.settings.field.istopnews}
+      starttime = {$plugin.tx_newt4news.settings.field.starttime}
+      endtime = {$plugin.tx_newt4news.settings.field.endtime}
     }
     required {
       title = {$plugin.tx_newt4news.settings.required.title}
@@ -25,6 +28,8 @@ plugin.tx_newt4news {
       imagedesc = {$plugin.tx_newt4news.settings.required.imagedesc}
       relatedfile = {$plugin.tx_newt4news.settings.required.relatedfile}
       categories = {$plugin.tx_newt4news.settings.required.categories}
+      starttime = {$plugin.tx_newt4news.settings.required.starttime}
+      endtime = {$plugin.tx_newt4news.settings.required.endtime}
     }
     value {
       showinpreview = {$plugin.tx_newt4news.settings.value.showinpreview}

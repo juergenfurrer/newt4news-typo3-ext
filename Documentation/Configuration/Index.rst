@@ -13,18 +13,21 @@ After adding the static, you will find the constants in the Constant editor:
 =====================================  ==========  ================================================================  =======================================
 Property:                              Data type:  Description:                                                      Default:
 =====================================  ==========  ================================================================  =======================================
-settings.field.istopnews               boolean     Set visibility for Top-News in the from                           1
-settings.field.title                   boolean     Set visibility for Title in the from                              1
-settings.field.teaser                  boolean     Set visibility for Teaser in the from                             1
-settings.field.bodytext                boolean     Set visibility for Bodytext in the from                           1
-settings.field.datetime                boolean     Set visibility for Datetime in the from                           1
-settings.field.archive                 boolean     Set visibility for Archive-Datetime in the from                   1
-settings.field.image                   integer     Set count of images in the from                                   1 (0-6)
-settings.field.showinpreview           integer     Set count of "Show in preview" in the from                        1 (0-6)
-settings.field.imagealt                integer     Set count of Image-Alternative in the from                        1 (0-6)
-settings.field.imagedesc               integer     Set count of Image-Description in the from                        1 (0-6)
-settings.field.relatedfile             integer     Set count of Related-Files in the from                            1 (0-6)
-settings.field.categories              boolean     Set visibility for Top-News in the from                           1
+settings.field.istopnews               boolean     Set visibility for Top-News in the form                           1
+settings.field.title                   boolean     Set visibility for Title in the form                              1
+settings.field.teaser                  boolean     Set visibility for Teaser in the form                             1
+settings.field.bodytext                boolean     Set visibility for Bodytext in the form                           1
+settings.field.datetime                boolean     Set visibility for Datetime in the form                           1
+settings.field.archive                 boolean     Set visibility for Archive-Datetime in the form                   1
+settings.field.image                   integer     Set count of images in the form                                   1 (0-6)
+settings.field.showinpreview           integer     Set count of "Show in preview" in the form                        1 (0-6)
+settings.field.imagealt                integer     Set count of Image-Alternative in the form                        1 (0-6)
+settings.field.imagedesc               integer     Set count of Image-Description in the form                        1 (0-6)
+settings.field.relatedfile             integer     Set count of Related-Files in the form                            1 (0-6)
+settings.field.categories              boolean     Set visibility for Top-News in the form                           1
+settings.field.hidden                  boolean     Set visibility for Hide in the form                               1
+settings.field.starttime               boolean     Set visibility for Publish Date in the form
+settings.field.endtime                 boolean     Set visibility for Expiration Date in the form
 -------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
 settings.required.title                boolean     Set Title required                                                1
 settings.required.teaser               boolean     Set Teaser required
@@ -37,6 +40,8 @@ settings.required.imagealt             integer     Set count of Image-Alternativ
 settings.required.imagedesc            integer     Set count of Image-Description required
 settings.required.relatedfile          integer     Set count of Related-Files required
 settings.required.categories           boolean     Set fields required
+settings.required.starttime            boolean     Set Publish Date required
+settings.required.endtime              boolean     Set Expiration Date required
 -------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------
 settings.value.showinpreview           integer     Sets default value of "Show in preview"
 -------------------------------------  ----------  ----------------------------------------------------------------  ---------------------------------------

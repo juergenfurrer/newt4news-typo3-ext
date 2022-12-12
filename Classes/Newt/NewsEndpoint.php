@@ -19,6 +19,7 @@ use Infonique\Newt\NewtApi\FieldType;
 use Infonique\Newt\NewtApi\FieldValidation;
 use Infonique\Newt\NewtApi\Item;
 use Infonique\Newt\NewtApi\ItemValue;
+use Infonique\Newt\NewtApi\LabelColor;
 use Infonique\Newt\NewtApi\MethodCreateModel;
 use Infonique\Newt\NewtApi\MethodDeleteModel;
 use Infonique\Newt\NewtApi\MethodListModel;
@@ -26,6 +27,7 @@ use Infonique\Newt\NewtApi\MethodReadModel;
 use Infonique\Newt\NewtApi\MethodType;
 use Infonique\Newt\NewtApi\MethodUpdateModel;
 use Infonique\Newt\Utility\SlugUtility;
+use Infonique\Newt\Utility\Utils;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -100,29 +102,17 @@ class NewsEndpoint implements EndpointInterface
 
         if (boolval($this->getSetting('datetime', 'field')) && isset($params["datetime"])) {
             /** @var DateTime */
-            $dateTime = $params["datetime"];
-            if (!empty($dateTime)) {
-                $now = new DateTime();
-                /** @var DateInterval */
-                $age = $dateTime->diff($now);
-                if ($age->y > 100) {
-                    $dateTime = $now;
-                }
-                $news->setDatetime($params["datetime"]);
+            $date = $params["datetime"];
+            if (!empty($date)) {
+                $news->setDatetime($this->getSanityDate($date));
             }
         }
 
         if (boolval($this->getSetting('archive', 'field')) && isset($params["archive"])) {
             /** @var DateTime */
-            $archive = $params["archive"];
-            if (!empty($archive)) {
-                $now = new DateTime();
-                /** @var DateInterval */
-                $age = $archive->diff($now);
-                if ($age->y > 100) {
-                    $archive = $now;
-                }
-                $news->setArchive($params["archive"]);
+            $date = $params["archive"];
+            if (!empty($date)) {
+                $news->setArchive($this->getSanityDate($date));
             }
         }
 
@@ -183,6 +173,26 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
+        if (boolval($this->getSetting('hidden', 'field')) && isset($params["hidden"])) {
+            $news->setHidden($params["hidden"]);
+        }
+
+        if (boolval($this->getSetting('starttime', 'field')) && isset($params["starttime"])) {
+            /** @var DateTime */
+            $date = $params["starttime"];
+            if (!empty($date)) {
+                $news->setStarttime($this->getSanityDate($date));
+            }
+        }
+
+        if (boolval($this->getSetting('endtime', 'field')) && isset($params["endtime"])) {
+            /** @var DateTime */
+            $date = $params["endtime"];
+            if (!empty($date)) {
+                $news->setEndtime($this->getSanityDate($date));
+            }
+        }
+
         if ($model->getPageUid() > 0) {
             $news->setPid($model->getPageUid());
         }
@@ -205,6 +215,15 @@ class NewsEndpoint implements EndpointInterface
         $item->setId(strval($news->getUid()));
         $item->setTitle($news->getTitle());
         $item->setDescription($news->getTeaser());
+        if ($news->getHidden()) {
+            $hiddenLabel = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden');
+            $item->setLabel($hiddenLabel ?? ' ');
+            $item->setLabelColor(LabelColor::DANGER);
+        } else if ($news->getIstopnews()) {
+            $topLabel = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.istopnews');
+            $item->setLabel($topLabel ?? ' ');
+            $item->setLabelColor(LabelColor::SUCCESS);
+        }
 
         // Add values if no read-method is set
         if (!in_array(MethodType::READ, $this->getAvailableMethodTypes())) {
@@ -230,7 +249,7 @@ class NewsEndpoint implements EndpointInterface
         $item->setId($id);
 
         /** @var News */
-        $news = $this->newsRepository->findByUid(intval($id));
+        $news = $this->newsRepository->findByUid(intval($id), false);
         if ($news) {
             if (boolval($this->getSetting('istopnews', 'field'))) {
                 $item->addValue(new ItemValue("istopnews", $news->getIstopnews()));
@@ -249,16 +268,16 @@ class NewsEndpoint implements EndpointInterface
             }
 
             if (boolval($this->getSetting('datetime', 'field'))) {
-                $datetime = $news->getDatetime();
-                if ($datetime) {
-                    $item->addValue(new ItemValue("datetime", $datetime));
+                $date = $news->getDatetime();
+                if ($date) {
+                    $item->addValue(new ItemValue("datetime", $date));
                 }
             }
 
             if (boolval($this->getSetting('archive', 'field'))) {
-                $archive = $news->getArchive();
-                if ($archive) {
-                    $item->addValue(new ItemValue("archive", $archive));
+                $date = $news->getArchive();
+                if ($date) {
+                    $item->addValue(new ItemValue("archive", $date));
                 }
             }
 
@@ -360,6 +379,24 @@ class NewsEndpoint implements EndpointInterface
                 }
                 $item->addValue(new ItemValue("categories", json_encode($values)));
             }
+
+            if (boolval($this->getSetting('hidden', 'field'))) {
+                $item->addValue(new ItemValue("hidden", $news->getHidden()));
+            }
+
+            if (boolval($this->getSetting('starttime', 'field'))) {
+                $date = $news->getStarttime();
+                if ($date) {
+                    $item->addValue(new ItemValue("starttime", $date));
+                }
+            }
+
+            if (boolval($this->getSetting('endtime', 'field'))) {
+                $date = $news->getEndtime();
+                if ($date) {
+                    $item->addValue(new ItemValue("endtime", $date));
+                }
+            }
         }
 
         return $item;
@@ -380,7 +417,7 @@ class NewsEndpoint implements EndpointInterface
 
         $params = $model->getParams();
         $id = intval($model->getUpdateId());
-        $news = $this->newsRepository->findByUid($id);
+        $news = $this->newsRepository->findByUid($id, false);
         if (!$news) {
             return $item;
         }
@@ -406,29 +443,17 @@ class NewsEndpoint implements EndpointInterface
 
         if (boolval($this->getSetting('datetime', 'field')) && isset($params["datetime"])) {
             /** @var DateTime */
-            $dateTime = $params["datetime"];
-            if (!empty($dateTime)) {
-                $now = new DateTime();
-                /** @var DateInterval */
-                $age = $dateTime->diff($now);
-                if ($age->y > 100) {
-                    $dateTime = $now;
-                }
-                $news->setDatetime($params["datetime"]);
+            $date = $params["datetime"];
+            if (!empty($date)) {
+                $news->setDatetime($this->getSanityDate($date));
             }
         }
 
         if (boolval($this->getSetting('archive', 'field')) && isset($params["archive"])) {
             /** @var DateTime */
-            $archive = $params["archive"];
-            if (!empty($archive)) {
-                $now = new DateTime();
-                /** @var DateInterval */
-                $age = $archive->diff($now);
-                if ($age->y > 100) {
-                    $archive = $now;
-                }
-                $news->setArchive($params["archive"]);
+            $date = $params["archive"];
+            if (!empty($date)) {
+                $news->setArchive($this->getSanityDate($date));
             }
         }
 
@@ -528,6 +553,26 @@ class NewsEndpoint implements EndpointInterface
             }
         }
 
+        if (boolval($this->getSetting('hidden', 'field')) && isset($params["hidden"])) {
+            $news->setHidden($params["hidden"]);
+        }
+
+        if (boolval($this->getSetting('starttime', 'field')) && isset($params["starttime"])) {
+            /** @var DateTime */
+            $date = $params["starttime"];
+            if (!empty($date)) {
+                $news->setStarttime($this->getSanityDate($date));
+            }
+        }
+
+        if (boolval($this->getSetting('endtime', 'field')) && isset($params["endtime"])) {
+            /** @var DateTime */
+            $date = $params["endtime"];
+            if (!empty($date)) {
+                $news->setEndtime($this->getSanityDate($date));
+            }
+        }
+
         if ($model->getBackendUserUid() > 0) {
             $news->setCruserId($model->getBackendUserUid());
         }
@@ -543,6 +588,15 @@ class NewsEndpoint implements EndpointInterface
         $item->setId(strval($news->getUid()));
         $item->setTitle($news->getTitle());
         $item->setDescription($news->getTeaser());
+        if ($news->getHidden()) {
+            $hiddenLabel = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden');
+            $item->setLabel($hiddenLabel ?? ' ');
+            $item->setLabelColor(LabelColor::DANGER);
+        } else if ($news->getIstopnews()) {
+            $topLabel = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.istopnews');
+            $item->setLabel($topLabel ?? ' ');
+            $item->setLabelColor(LabelColor::SUCCESS);
+        }
 
         // Add values if no read-method is set
         if (!in_array(MethodType::READ, $this->getAvailableMethodTypes())) {
@@ -564,7 +618,7 @@ class NewsEndpoint implements EndpointInterface
     {
         try {
             $id = intval($model->getDeleteId());
-            $news = $this->newsRepository->findByUid($id);
+            $news = $this->newsRepository->findByUid($id, false);
             $this->newsRepository->remove($news);
 
             // persist the item
@@ -607,7 +661,9 @@ class NewsEndpoint implements EndpointInterface
             $demand->setStoragePage(strval($model->getPageUid()));
         }
 
-        $news = $this->newsRepository->findDemanded($demand)->toArray();
+        $news = $this->newsRepository->findDemanded($demand, false)->toArray();
+        $hiddenLabel = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden');
+        $topLabel = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.istopnews');
 
         $useItems = $startUid < 1;
         /** @var News $newsItem */
@@ -617,6 +673,13 @@ class NewsEndpoint implements EndpointInterface
                 $item->setId(strval($newsItem->getUid()));
                 $item->setTitle(trim($newsItem->getTitle()));
                 $item->setDescription(trim(strip_tags($newsItem->getTeaser())));
+                if ($newsItem->getHidden()) {
+                    $item->setLabel($hiddenLabel ?? ' ');
+                    $item->setLabelColor(LabelColor::DANGER);
+                } else if ($newsItem->getIstopnews()) {
+                    $item->setLabel($topLabel ?? ' ');
+                    $item->setLabelColor(LabelColor::SUCCESS);
+                }
                 $items[] = $item;
             }
             if ($startUid == 0 || $newsItem->getUid() == $startUid) {
@@ -709,31 +772,31 @@ class NewsEndpoint implements EndpointInterface
 
         if (boolval($this->getSetting('datetime', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.datetime');
-            $datetime = new Field();
-            $datetime->setName("datetime");
-            $datetime->setLabel($label ?? '');
-            $datetime->setType(FieldType::DATETIME);
-            $notRequiredOverride = boolval($this->getNewsSetting("dateTimeNotRequired"));
-            if (boolval($this->getSetting('datetime', 'required')) && ! $notRequiredOverride) {
-                $datetime->setValidation($required);
+            $date = new Field();
+            $date->setName("datetime");
+            $date->setLabel($label ?? '');
+            $date->setType(FieldType::DATETIME);
+            $notRequiredOverride = Utils::isTrue($this->getNewsSetting("dateTimeNotRequired"));
+            if (boolval($this->getSetting('datetime', 'required')) && !$notRequiredOverride) {
+                $date->setValidation($required);
             }
-            $ret[] = $datetime;
+            $ret[] = $date;
         }
 
         if (boolval($this->getSetting('archive', 'field'))) {
             $label = LocalizationUtility::translate('LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.archive');
-            $archive = new Field();
-            $archive->setName("archive");
-            $archive->setLabel($label ?? '');
+            $date = new Field();
+            $date->setName("archive");
+            $date->setLabel($label ?? '');
             if ($this->getNewsSetting("archiveDate") == "datetime") {
-                $archive->setType(FieldType::DATETIME);
+                $date->setType(FieldType::DATETIME);
             } else {
-                $archive->setType(FieldType::DATE);
+                $date->setType(FieldType::DATE);
             }
             if (boolval($this->getSetting('archive', 'required'))) {
-                $archive->setValidation($required);
+                $date->setValidation($required);
             }
-            $ret[] = $archive;
+            $ret[] = $date;
         }
 
         $imgCount = min($this->maxImageCount, intval($this->getSetting('image', 'field')));
@@ -850,6 +913,44 @@ class NewsEndpoint implements EndpointInterface
             $ret[] = $categories;
         }
 
+        // Add the divider
+        $divider = new Field();
+        $divider->setType(FieldType::DIVIDER);
+        $ret[] = $divider;
+
+        if (boolval($this->getSetting('hidden', 'field'))) {
+            $label = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden');
+            $hidden = new Field();
+            $hidden->setName("hidden");
+            $hidden->setLabel($label ?? '');
+            $hidden->setType(FieldType::CHECKBOX);
+            $ret[] = $hidden;
+        }
+
+        if (boolval($this->getSetting('starttime', 'field'))) {
+            $label = LocalizationUtility::translate('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:starttime_formlabel');
+            $date = new Field();
+            $date->setName("starttime");
+            $date->setLabel($label ?? '');
+            $date->setType(FieldType::DATETIME);
+            if (boolval($this->getSetting('starttime', 'required'))) {
+                $date->setValidation($required);
+            }
+            $ret[] = $date;
+        }
+
+        if (boolval($this->getSetting('endtime', 'field'))) {
+            $label = LocalizationUtility::translate('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel');
+            $date = new Field();
+            $date->setName("endtime");
+            $date->setLabel($label ?? '');
+            $date->setType(FieldType::DATETIME);
+            if (boolval($this->getSetting('endtime', 'required'))) {
+                $date->setValidation($required);
+            }
+            $ret[] = $date;
+        }
+
         return $ret;
     }
 
@@ -874,5 +975,24 @@ class NewsEndpoint implements EndpointInterface
             return $this->settingsNews[$key];
         }
         return '';
+    }
+
+    /**
+     * Sanity-Check DateTime
+     *
+     * @param DateTime|null $date
+     * @return DateTime|null
+     */
+    private function getSanityDate(?DateTime $date): ?DateTime
+    {
+        if (!empty($date)) {
+            $now = new DateTime();
+            /** @var DateInterval */
+            $age = $date->diff($now);
+            if ($age->y > 100) {
+                $date = $now;
+            }
+        }
+        return $date;
     }
 }
