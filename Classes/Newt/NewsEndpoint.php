@@ -650,6 +650,9 @@ class NewsEndpoint implements EndpointInterface
         /** @var NewsDemand */
         $demand = GeneralUtility::makeInstance(NewsDemand::class);
 
+        // Only normal news are allowed
+        $demand->setTypes([0]);
+
         $orderField = $this->getSetting('orderField', 'list');
         $orderDirection = $this->getSetting('orderDirection', 'list');
         if (!empty($orderField) && !empty($orderDirection)) {

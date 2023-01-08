@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 2.2.1
+-------------
+Fix news-type in list
+
 Version 2.2.0
 -------------
 Add hide, start- and enddate
