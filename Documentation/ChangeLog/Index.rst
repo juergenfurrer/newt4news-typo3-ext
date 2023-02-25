@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 2.2.2
+-------------
+Update EXT-depends
+
 Version 2.2.1
 -------------
 Fix news-type in list
