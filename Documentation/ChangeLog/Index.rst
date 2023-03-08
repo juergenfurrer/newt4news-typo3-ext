@@ -6,6 +6,10 @@
 Change log
 ==========
 
+Version 2.2.3
+-------------
+Fix error in PHP 8
+
 Version 2.2.2
 -------------
 Update EXT-depends
