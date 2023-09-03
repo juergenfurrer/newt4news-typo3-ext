@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infonique\Newt4News\Newt;
+namespace Swisscode\Newt4News\Newt;
 
 use DateInterval;
 use DateTime;
@@ -12,22 +12,22 @@ use GeorgRinger\News\Domain\Model\FileReference;
 use GeorgRinger\News\Domain\Model\News;
 use GeorgRinger\News\Domain\Repository\CategoryRepository;
 use GeorgRinger\News\Domain\Repository\NewsRepository;
-use Infonique\Newt\NewtApi\EndpointInterface;
-use Infonique\Newt\NewtApi\Field;
-use Infonique\Newt\NewtApi\FieldItem;
-use Infonique\Newt\NewtApi\FieldType;
-use Infonique\Newt\NewtApi\FieldValidation;
-use Infonique\Newt\NewtApi\Item;
-use Infonique\Newt\NewtApi\ItemValue;
-use Infonique\Newt\NewtApi\LabelColor;
-use Infonique\Newt\NewtApi\MethodCreateModel;
-use Infonique\Newt\NewtApi\MethodDeleteModel;
-use Infonique\Newt\NewtApi\MethodListModel;
-use Infonique\Newt\NewtApi\MethodReadModel;
-use Infonique\Newt\NewtApi\MethodType;
-use Infonique\Newt\NewtApi\MethodUpdateModel;
-use Infonique\Newt\Utility\SlugUtility;
-use Infonique\Newt\Utility\Utils;
+use Swisscode\Newt\NewtApi\EndpointInterface;
+use Swisscode\Newt\NewtApi\Field;
+use Swisscode\Newt\NewtApi\FieldItem;
+use Swisscode\Newt\NewtApi\FieldType;
+use Swisscode\Newt\NewtApi\FieldValidation;
+use Swisscode\Newt\NewtApi\Item;
+use Swisscode\Newt\NewtApi\ItemValue;
+use Swisscode\Newt\NewtApi\LabelColor;
+use Swisscode\Newt\NewtApi\MethodCreateModel;
+use Swisscode\Newt\NewtApi\MethodDeleteModel;
+use Swisscode\Newt\NewtApi\MethodListModel;
+use Swisscode\Newt\NewtApi\MethodReadModel;
+use Swisscode\Newt\NewtApi\MethodType;
+use Swisscode\Newt\NewtApi\MethodUpdateModel;
+use Swisscode\Newt\Utility\SlugUtility;
+use Swisscode\Newt\Utility\Utils;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -124,8 +124,8 @@ class NewsEndpoint implements EndpointInterface
                 $paramShowinpreview = "showinpreview{$imgNum}";
                 $paramImagealt = "imagealt{$imgNum}";
                 $paramImagedesc = "imagedesc{$imgNum}";
-                if (isset($params[$paramImage]) && $params[$paramImage] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                if (isset($params[$paramImage]) && $params[$paramImage] instanceof \Swisscode\Newt\Domain\Model\FileReference) {
+                    /** @var \Swisscode\Newt\Domain\Model\FileReference */
                     $imageRef = $params[$paramImage];
                     /** @var \GeorgRinger\News\Domain\Model\FileReference */
                     $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
@@ -150,8 +150,8 @@ class NewsEndpoint implements EndpointInterface
             for ($i = 0; $i < $relatedfileCount; $i++) {
                 $fileNum = $i > 0 ? $i : "";
                 $paramRelatedfile = "relatedfile{$fileNum}";
-                if (isset($params[$paramRelatedfile]) && $params[$paramRelatedfile] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                if (isset($params[$paramRelatedfile]) && $params[$paramRelatedfile] instanceof \Swisscode\Newt\Domain\Model\FileReference) {
+                    /** @var \Swisscode\Newt\Domain\Model\FileReference */
                     $imageRef = $params[$paramRelatedfile];
                     /** @var \GeorgRinger\News\Domain\Model\FileReference */
                     $fileReference = GeneralUtility::makeInstance(\GeorgRinger\News\Domain\Model\FileReference::class);
@@ -480,8 +480,8 @@ class NewsEndpoint implements EndpointInterface
                         }
                     }
                 }
-                if (isset($params[$paramImage]) && $params[$paramImage] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                if (isset($params[$paramImage]) && $params[$paramImage] instanceof \Swisscode\Newt\Domain\Model\FileReference) {
+                    /** @var \Swisscode\Newt\Domain\Model\FileReference */
                     $imageRef = $params[$paramImage];
 
                     $usedMedia->setFileUid($imageRef->getUidLocal());
@@ -525,8 +525,8 @@ class NewsEndpoint implements EndpointInterface
                         }
                     }
                 }
-                if (isset($params[$paramRelatedfile]) && $params[$paramRelatedfile] instanceof \Infonique\Newt\Domain\Model\FileReference) {
-                    /** @var \Infonique\Newt\Domain\Model\FileReference */
+                if (isset($params[$paramRelatedfile]) && $params[$paramRelatedfile] instanceof \Swisscode\Newt\Domain\Model\FileReference) {
+                    /** @var \Swisscode\Newt\Domain\Model\FileReference */
                     $fileRef = $params[$paramRelatedfile];
                     $usedFile->setFileUid($fileRef->getUidLocal());
                     if ($isNew) {

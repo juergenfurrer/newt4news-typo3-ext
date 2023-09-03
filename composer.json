@@ -1,10 +1,10 @@
 {
-    "name": "infonique/newt4news",
+    "name": "swisscode/newt4news",
     "type": "typo3-cms-extension",
     "description": "Extension with the Newt-Provider for News",
     "homepage": "https://extensions.typo3.org/extension/newt4news",
     "support": {
-        "docs": "https://docs.typo3.org/p/infonique/newt4news/main/en-us/",
+        "docs": "https://docs.typo3.org/p/swisscode/newt4news/main/en-us/",
         "issues": "https://github.com/juergenfurrer/newt4news-typo3-ext/issues",
         "source": "https://github.com/juergenfurrer/newt4news-typo3-ext"
     },
@@ -16,13 +16,13 @@
     ],
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^11.5 || ^10.4",
-        "infonique/newt": "^2.0.0",
-        "georgringer/news": "^8.0.0"
+        "typo3/cms-core": "^11.5 || ^12.4",
+        "swisscode/newt": "^3.0.0",
+        "georgringer/news": "^11.0.0"
     },
     "autoload": {
         "psr-4": {
-            "Infonique\\Newt4News\\": "Classes"
+            "Swisscode\\Newt4News\\": "Classes"
         }
     },
     "extra": {

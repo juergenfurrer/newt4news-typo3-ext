@@ -4,5 +4,5 @@ services:
     autoconfigure: true
     public: true
 
-  Infonique\Newt4News\Newt\:
+  Swisscode\Newt4News\Newt\:
     resource: '../Classes/Newt/*'

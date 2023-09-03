@@ -12,7 +12,7 @@ Click the plus-button, to add a new record and chose :code:`Endpoint` under :cod
 
 Enter the Name and the description, the Client will see this labels.
 
-Chose the Endpoint Class :code:`Infonique\Newt4News\Newt\NewsEndpoint` from the list
+Chose the Endpoint Class :code:`Swisscode\Newt4News\Newt\NewsEndpoint` from the list
 
 If you fill in the Page UID, the records created with Newt will be stored on this page.
 
